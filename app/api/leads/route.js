@@ -15,7 +15,5 @@ export async function POST(req) {
         ])
         .select()
 
-    console.log(error)
-
     return new Response('Success')
 }

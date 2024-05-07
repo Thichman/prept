@@ -32,10 +32,8 @@ const LeadFunnel = () => {
             }
 
             console.log('Form data submitted successfully');
-            // Handle success response as needed
         } catch (error) {
             console.error('Error submitting form data:', error.message);
-            // Handle error response as needed
         }
     };
 

@@ -2,6 +2,9 @@ import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
+
+//need to delete this age once development has begun
+
 export default async function ProtectedPage() {
   const supabase = createClient();
 
@@ -9,6 +12,7 @@ export default async function ProtectedPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  //move this to the authorized layout page so all of it is protected
   if (!user) {
     return redirect("/login");
   }
