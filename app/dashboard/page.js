@@ -1,11 +1,12 @@
 'use client'
 import { useState } from "react";
+import { mainScraper } from "./data-scraping/main-scraper";
 
 export default function dashboard() {
     const [formData, setFormData] = useState({
         facebook: '',
         instagram: '',
-        linkedin: '',
+        linkdin: '',
         fullName: ''
     });
     const [summary, setSummary] = useState('');
@@ -17,11 +18,16 @@ export default function dashboard() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Construct summary text
-        const summaryText = `Full Name: ${formData.fullName}\n\nFacebook: ${formData.facebook}\nInstagram: ${formData.instagram}\nLinkedIn: ${formData.linkedin}`;
-        setSummary(summaryText);
+        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin, name: formData.fullName }
+        const returnPrompt = await mainScraper(dataSending)
+        setSummary(returnPrompt);
+
+
+        // this function is for the return from the AI
+        // setSummary(summaryText);
     };
 
     const handleDownloadPDF = () => {
@@ -42,19 +48,19 @@ export default function dashboard() {
                     <h2 className="text-2xl font-bold mb-4">Enter Your Information</h2>
                     <div className="mb-4">
                         <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
+                        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
-                        <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
+                        <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                        <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
+                        <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="linkedin" className="block text-gray-700">LinkedIn Link</label>
-                        <input type="text" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" required />
+                        <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
                     </div>
                     <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
                 </form>
