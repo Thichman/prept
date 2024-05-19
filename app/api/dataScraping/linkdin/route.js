@@ -6,6 +6,7 @@ export async function POST(request) {
         token: process.env.APIFY_TOKEN,
     });
 
+    console.log(requestData)
     const input = {
         "urls": [
             {

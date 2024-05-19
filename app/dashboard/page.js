@@ -24,10 +24,7 @@ export default function dashboard() {
         const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin, name: formData.fullName }
         const returnPrompt = await mainScraper(dataSending)
         setSummary(returnPrompt);
-
-
-        // this function is for the return from the AI
-        // setSummary(summaryText);
+        const successfulCall = await callModel(returnPrompt)
     };
 
     const handleDownloadPDF = () => {
@@ -41,6 +38,36 @@ export default function dashboard() {
         a.click();
     };
 
+    const callModel = async (message) => {
+        const requestBody = {
+            message: message,
+            parentData: parentData ? JSON.stringify(parentData) : '',
+        };
+        const response = await fetch('../../api/applications/hermes/aiPipeline', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody),
+
+        })
+
+        const stream = await response.body.getReader();
+        let data = '';
+
+        while (true) {
+            const { done, value } = await stream.read();
+
+            if (done) {
+                break;
+            }
+            data += new TextDecoder().decode(value);
+
+
+        }
+        setSummary(data);
+    };
+
     return (
         <div className="max-w-3xl mx-auto py-8 px-4">
             <div className="flex">
@@ -48,7 +75,7 @@ export default function dashboard() {
                     <h2 className="text-2xl font-bold mb-4">Enter Your Information</h2>
                     <div className="mb-4">
                         <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
+                        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
@@ -78,6 +105,7 @@ export default function dashboard() {
                     )}
                 </div>
             </div>
+
         </div>
     );
 };
