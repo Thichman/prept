@@ -32,11 +32,8 @@ const runLLMChain = async (prompt) => {
 
 export async function POST(request) {
     const requestData = await request.json();
-    let prompt = requestData.message;
-    if (requestData.parentData) {
-        const parentDataStr = JSON.stringify(requestData.parentData);
-        prompt = `You will recieve 2 things, firstly data that the user wants you to reference, second the users request. Do what the user prompts you to do to the best of your abilities. Date for you to reference: ${prompt}\n Users prompt on what they want: \n${parentDataStr}`;
-    }
+    const parentDataStr = JSON.stringify(requestData.parentData);
+    const prompt = ``;
 
     const stream = runLLMChain(prompt);
     return new Response(await stream);

@@ -38,12 +38,11 @@ export default function dashboard() {
         a.click();
     };
 
-    const callModel = async (message) => {
+    const callModel = async (readyPrompt) => {
         const requestBody = {
-            message: message,
-            parentData: parentData ? JSON.stringify(parentData) : '',
+            parentData: readyPrompt,
         };
-        const response = await fetch('../../api/applications/hermes/aiPipeline', {
+        const response = await fetch('../api/ai/prompt', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
