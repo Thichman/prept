@@ -23,8 +23,10 @@ export default function dashboard() {
         // Construct summary text
         const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin, name: formData.fullName }
         const returnPrompt = await mainScraper(dataSending)
-        setSummary(returnPrompt);
-        const successfulCall = await callModel(returnPrompt)
+        console.log(returnPrompt)
+        // const successfulCall = await callModel(returnPrompt)
+        // setSummary(returnPrompt);
+
     };
 
     const handleDownloadPDF = () => {
@@ -78,15 +80,15 @@ export default function dashboard() {
                     </div>
                     <div className="mb-4">
                         <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
-                        <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
+                        <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                        <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
+                        <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" />
                     </div>
                     <div className="mb-4">
                         <label htmlFor="linkedin" className="block text-gray-700">LinkedIn Link</label>
-                        <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" required />
+                        <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" />
                     </div>
                     <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
                 </form>

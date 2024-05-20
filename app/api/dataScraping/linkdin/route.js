@@ -1,33 +1,30 @@
-import { ApifyClient } from 'apify-client';
+const axios = require('axios');
 
 export async function POST(request) {
     const requestData = await request.json();
-    const client = new ApifyClient({
-        token: process.env.APIFY_TOKEN,
-    });
 
     console.log(requestData)
-    const input = {
-        "urls": [
-            {
-                "url": requestData
-            }
-        ],
-        "min": 20,
-        "max": 50
+
+
+    const options = {
+        method: 'POST',
+        url: 'https://linkedin-data-scraper.p.rapidapi.com/person',
+        headers: {
+            'content-type': 'application/json',
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
+            'X-RapidAPI-Host': 'linkedin-data-scraper.p.rapidapi.com'
+        },
+        data: {
+            link: requestData
+        }
     };
 
     try {
-        const run = await client.actor("KYzSqU1FJUomdKfHD").call(input);
-
-        const { items } = await client.dataset(run.defaultDatasetId).listItems();
-        items.forEach((item) => {
-            console.dir(item);
-        });
-
-        return new Response(items);
+        const response = await axios.request(options);
+        console.log(response.data);
+        return new Response(response.data);
     } catch (error) {
-        console.error('Error running Apify actor:', error.message);
-        return new Response("Error running Apify actor", { status: 500 });
+        console.error(error);
+        return new Response("Error")
     }
 }
