@@ -32,6 +32,7 @@ export async function POST(request) {
             console.dir(item);
         });
 
+        console.log(items)
         return new Response(items);
     } catch (error) {
         console.error('Error running Apify actor:', error.message);

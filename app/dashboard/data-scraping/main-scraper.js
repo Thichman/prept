@@ -1,6 +1,4 @@
 export async function mainScraper(data) {
-    console.log(data)
-
     let returnDataObject = {}; // Initialize an empty object to store the returned data
 
     if (data.linkdin) {
@@ -16,8 +14,7 @@ export async function mainScraper(data) {
         }
 
         const linkdinReturnData = await linkdinData.json()
-        console.log(linkdinReturnData)
-        returnDataObject['linkedin'] = linkdinReturnData; // Add LinkedIn data to the object
+        returnDataObject['linkedin'] = linkdinReturnData.data;
     }
 
     if (data.facebook) {
@@ -33,8 +30,9 @@ export async function mainScraper(data) {
         }
 
         const facebookReturnData = await facebookData.json()
-        console.log(facebookReturnData)
-        returnDataObject['facebook'] = facebookReturnData; // Add Facebook data to the object
+        if (!facebookReturnData.error) {
+            returnDataObject['facebook'] = facebookReturnData; // Add Facebook data to the object
+        }
     }
 
     if (data.instagram) {
@@ -50,9 +48,8 @@ export async function mainScraper(data) {
         }
 
         const instagramReturnData = await instagramData.json()
-        console.log(instagramReturnData)
         returnDataObject['instagram'] = instagramReturnData; // Add Instagram data to the object
     }
 
-    return returnDataObject; // Return the object containing all the platform data
+    return JSON.stringify(returnDataObject); // Return the object containing all the platform data
 }

@@ -24,8 +24,8 @@ export async function POST(request) {
         items.forEach((item) => {
             console.dir(item);
         });
-
-        return new Response(items);
+        const returnItems = JSON.stringify(items)
+        return new Response(returnItems);
     } catch (error) {
         console.error('Error running Apify actor:', error.message);
         return new Response("Error running Apify actor", { status: 500 });

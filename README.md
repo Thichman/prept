@@ -1,9 +1,10 @@
 The nexts steps are to test the data scraping functionality.
 
 Things still needed for the prototype:
-    1. Finish and make sure data is scraped and returned correctly from Apify.
-    2. Send data to the ai and have it returned correctly.
-    3. Make sure that it is downloadable and formatted.
+    <!-- 1. Finish and make sure data is scraped and returned correctly from Apify. -->
+    <!-- 2. Send data to the ai and have it returned correctly.
+        look at the other Repo for Hermes on how to do this correctly -->
+    <!-- 3. Make sure that it is downloadable and formatted. -->
     4. Make a Login page that is functional.
     5. Update styling on everything
     6. Get the domain and connect it to vercel deployment.
@@ -29,6 +30,7 @@ Information:
     For scraping data we use two places:
         Apify: https://console.apify.com
             Apify is used for Facebook and Instagram Scraping
+            Facebook is currently not working so we will need to revise on this one
 
         Rapid API: https://rapidapi.com
             Rapid API is used for our Linkedin Scraping

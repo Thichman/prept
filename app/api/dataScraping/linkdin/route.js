@@ -3,9 +3,6 @@ const axios = require('axios');
 export async function POST(request) {
     const requestData = await request.json();
 
-    console.log(requestData)
-
-
     const options = {
         method: 'POST',
         url: 'https://linkedin-data-scraper.p.rapidapi.com/person',
@@ -21,8 +18,8 @@ export async function POST(request) {
 
     try {
         const response = await axios.request(options);
-        console.log(response.data);
-        return new Response(response.data);
+        const returnItems = JSON.stringify(response.data)
+        return new Response(returnItems);
     } catch (error) {
         console.error(error);
         return new Response("Error")
