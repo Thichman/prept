@@ -7,8 +7,9 @@ Things still needed for the prototype:
     <!-- 3. Make sure that it is downloadable and formatted. -->
     <!-- 4. Make a Login page that is functional. -->
     5. Update styling on everything
-    6. Get the domain and connect it to vercel deployment.
+    <!-- 6. Get the domain and connect it to vercel deployment. -->
     7. Fix the AI prompt to return everything correctly.
+    8. Update payment information on data scrapers so they do not stop working.
 
 Things for final production:
     1. Set up payment page and system using Stripe.
@@ -34,3 +35,5 @@ Information:
 
         Rapid API: https://rapidapi.com
             Rapid API is used for our Linkedin Scraping
+
+At somepoint I need to make an actual ReadMe Page.
