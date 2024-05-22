@@ -5,10 +5,10 @@ Things still needed for the prototype:
     <!-- 2. Send data to the ai and have it returned correctly.
         look at the other Repo for Hermes on how to do this correctly -->
     <!-- 3. Make sure that it is downloadable and formatted. -->
-    4. Make a Login page that is functional.
+    <!-- 4. Make a Login page that is functional. -->
     5. Update styling on everything
     6. Get the domain and connect it to vercel deployment.
-    7.
+    7. Fix the AI prompt to return everything correctly.
 
 Things for final production:
     1. Set up payment page and system using Stripe.
