@@ -9,21 +9,30 @@ export async function POST(request) {
     });
 
     const input = {
-        "startUrls": [
-            {
-                "url": requestData
-            }
-        ]
-    };
+        "count": 1,
+        "maxDelay": 3,
+        "minDelay": 1,
+        "profileUrls": [
+            requestData
+        ],
+        "proxy": {
+            "useApifyProxy": true,
+            "apifyProxyGroups": [
+                "RESIDENTIAL"
+            ],
+            "apifyProxyCountry": "US"
+        }
+    }
 
     try {
-        const run = await client.actor("dSCLg0C3YEZ83HzYX").call(input);
+        const run = await client.actor("mlTO6kyEd7ZLgalf1").call(input);
 
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
         items.forEach((item) => {
             console.dir(item);
         });
 
+        console.log(items)
         return new Response(items);
     } catch (error) {
         console.error('Error running Apify actor:', error.message);

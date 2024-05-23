@@ -1,42 +1,22 @@
-import AuthButton from "../components/AuthButton";
-import LeadFunnel from "./pages/lead-funnel"
-
-export default async function Index() {
-
-  //This variable needs to be in place for the lead form
-  //Only change this localy to work on the main application
-  //true = leadfunnel
-  //false = development
-
+'use client'
+export default function Index() {
   return (
-    <div>
-
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
-            {<AuthButton />}
-          </div>
-        </nav>
-
-        <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-          <main className="flex-1 flex flex-col gap-6">
-            <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-          </main>
+    <div className="bg-gradient-to-b from-gray-200 to-gray-300 min-h-screen">
+      <div className="flex flex-col items-center py-10">
+        <div className="max-w-4xl px-6 text-center">
+          <h1 className="font-bold text-4xl mb-6 text-prept-color-header-gray-black">Welcome to Prept.ai</h1>
+          <p className="text-lg mb-4">Unlock the Power of Personalized Insights</p>
+          <p className="text-md mb-6">At Prept.ai, we believe in empowering sales professionals and executives with the tools they need to succeed. Our innovative web scraping technology collects and synthesizes data to generate detailed executive reports about individuals or businesses, helping you build stronger connections and tailor your engagement strategies effectively.</p>
+          <h2 className="font-bold text-2xl mb-4 text-prept-color-header-gray-black">Why Prept.ai?</h2>
+          <p className="text-md mb-4">- <strong>Intuitive User Interface</strong>: Navigate through a user-focused interface designed to guide you seamlessly.</p>
+          <p className="text-md mb-4">- <strong>Targeted for Success</strong>: Perfect for sales agents and C-suite executives who require comprehensive background information for meetings and pitches.</p>
+          <p className="text-md mb-6">- <strong>Comprehensive Data Scraping</strong>: Start with easily accessible data and expand to deeper, richer sources like LinkedIn, Facebook, and news articles.</p>
+          <h2 className="font-bold text-2xl mb-4 text-prept-color-header-gray-black">Features and Capabilities</h2>
+          <p className="text-md mb-4">- <strong>Executive Reports</strong>: Generate detailed reports that include contact information, work history, and recent activities.</p>
+          <p className="text-md mb-6">- <strong>Seamless Integration</strong>: Export results in PDF format and plan for future API integrations with CRM systems like Salesforce or HubSpot.</p>
+          <h2 className="font-bold text-2xl mb-4 text-prept-color-header-gray-black">Join Us Early</h2>
+          <p className="text-md mb-6">Be the first to leverage the power of Prept.ai. Sign up now for early access and stay updated with the latest developments.</p>
         </div>
-
-        <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-        </footer>
       </div>
     </div>
   );
