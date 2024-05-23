@@ -16,7 +16,45 @@ export async function POST(request) {
     if (requestData.parentData) {
         const parentDataStr = JSON.stringify(requestData.parentData);
         const individualName = requestData.fullName
-        prompt = `I want you to create a document with all relevent information on the individual that I would need to know in order to have a successful meeting or call with this person. The Document can be quite long but I want you to focus primarily on the linkedin data and not the instagram data, like a 90% linkedin to 10% instagram data split. Also at the top include a header and in the document do not have any picture links. Also, do not add weird characters such as '*' or '#' to the document as well. Also check the individuals instagram information and see if they have recently gone anywhere or posted something interesting for reference. Here is the individuals information: Individuals full name${individualName}, Scraped Data: ${parentDataStr}`;
+        prompt = `Create a comprehensive document that consolidates all relevant information about an individual, primarily focusing on LinkedIn data with a slight reference to Instagram data. This document should be used to prepare for meetings or calls. The document should be structured for easy readability and quick reference. Here is the individual’s information: Individual’s full name: ${individualName} Scraped Data: ${parentDataStr}
+
+        Document Requirements:
+        
+        1. Header: Include a professional header with the individual’s full name.
+        2. LinkedIn Data (90%):
+          • Personal Information:
+            - Full Name
+            - Current Job Title
+            - Current Company
+          • Company Information:
+            - Company Name
+            - Facts about the Business (e.g., industry, product lines, market position)
+            - Employee Count
+            - Headquarters Location
+            - Recent Major News (e.g., acquisitions, significant hires, promotions)
+            - Hiring Status (if available)
+          • Recent Activity:
+            - Recent LinkedIn Posts (summaries and direct quotes where relevant)
+            - Topics they frequently post about or engage with
+          • Job Role Information:
+            - Detailed description of the individual’s role
+            - Key responsibilities and typical activities
+            - Relevant industry lingo or terminology
+          • Potential Conversation Starters:
+            - Common interests or shared topics based on their activity
+            - Points of engagement from recent posts or shared articles
+        3. Instagram Data (10%):
+          • Verify the individual’s authenticity
+          • Note any recent posts or activity if relevant
+        4. No Picture Links: Ensure that no picture links are included in the document.
+        5. Format:
+          • Organized into clear, distinct sections for quick reference
+          • Use paragraphs and bullet points where appropriate for clarity
+          • Do not include any links to anything.
+          • Do not include any weird characters including '*', '#', '%' ...
+          
+        Goal: This document should all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. This should be a long
+        document that encompases everything important, do not cut corners`;
     }
 
     const result = await runLLMChain(prompt);

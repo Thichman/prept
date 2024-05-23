@@ -6,10 +6,16 @@ Things still needed for the prototype:
         look at the other Repo for Hermes on how to do this correctly -->
     <!-- 3. Make sure that it is downloadable and formatted. -->
     <!-- 4. Make a Login page that is functional. -->
-    5. Update styling on everything
+    <!-- 5. Update styling on everything
+        1. Make the logo go away when the back bar is actie on the login page
+        2. Styling of the form page.
+        3. Add a how to use box for the dashboard page.
+        4. Make the dashboard page look better. -->
     <!-- 6. Get the domain and connect it to vercel deployment. -->
-    7. Fix the AI prompt to return everything correctly.
+    <!-- 7. Fix the AI prompt to return everything correctly. -->
     8. Update payment information on data scrapers so they do not stop working.
+        Need to keep an eye on this.
+    7. New data sources based on links or articles found.
 
 Things for final production:
     1. Set up payment page and system using Stripe.
@@ -20,6 +26,8 @@ Things for final production:
         -footer
         -security pages
         -policy page
+    6. Gameify the screen so it takes in different data sources in a fun slide pannel. UI should be like turbo tax card slides.
+    7. Update prompt when we add all data points.
 
 Future features
     1. Way to only input name and company of individual and the app funds the links for the user without having to do research
