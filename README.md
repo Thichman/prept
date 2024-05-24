@@ -1,47 +1,51 @@
-The nexts steps are to test the data scraping functionality.
+# Project Roadmap
 
-Things still needed for the prototype:
-    <!-- 1. Finish and make sure data is scraped and returned correctly from Apify. -->
-    <!-- 2. Send data to the ai and have it returned correctly.
-        look at the other Repo for Hermes on how to do this correctly -->
-    <!-- 3. Make sure that it is downloadable and formatted. -->
-    <!-- 4. Make a Login page that is functional. -->
-    <!-- 5. Update styling on everything
-        1. Make the logo go away when the back bar is actie on the login page
-        2. Styling of the form page.
-        3. Add a how to use box for the dashboard page.
-        4. Make the dashboard page look better. -->
-    <!-- 6. Get the domain and connect it to vercel deployment. -->
-    <!-- 7. Fix the AI prompt to return everything correctly. -->
-    8. Update payment information on data scrapers so they do not stop working.
-        Need to keep an eye on this.
-    7. New data sources based on links or articles found.
+## Next Steps
+**Need to Make actual sprint board for the final product. Probably in github projects**
 
-Things for final production:
-    1. Set up payment page and system using Stripe.
-    2. Build out chat ai interface for user engagement.
-    3. Have all scraped data get pushed to the database.
-    4. Build page for user page for people to update their accounts.
-    5. Finalize all of the pages:
-        -footer
-        -security pages
-        -policy page
-    6. Gameify the screen so it takes in different data sources in a fun slide pannel. UI should be like turbo tax card slides.
-    7. Update prompt when we add all data points.
+## Tasks for Final Production
+1. **Set Up Payment System**
+   - Implement using [Stripe](https://stripe.com).
+2. **Build Chat AI Interface**
+   - Enhance user engagement.
+3. **Push Scraped Data to Database**
+   - Automate data transfer.
+4. **Develop User Page**
+   - Allow users to update their accounts.
+5. **Finalize All Pages**
+   - Footer
+   - Security pages
+   - Policy page
+6. **Gamify the Interface**
+   - Create a fun, slide-panel UI similar to TurboTax card slides.
+7. **Update Prompt**
+   - Reflect all data points.
+8. **Update Payment Information**
+   - Ensure data scrapers do not stop working.
+   - Keep an eye on this regularly.
+9. **Integrate New Data Sources**
+   - Incorporate links or articles found.
+10. **Error Handeling**
+   - In app error handeling needs to be completed.
+   - All api errors should send me a direct email when that happens.
 
-Future features
-    1. Way to only input name and company of individual and the app funds the links for the user without having to do research
+## Future Features
+1. **Simplified User Input**
+   - Allow users to input only the name and company of an individual.
+   - The app will find links for the user without requiring additional research.
 
+## Information
 
+### Data Scraping Tools
+- **Apify**
+  - [Apify Console](https://console.apify.com)
+  - Used for Facebook and Instagram scraping.
+  - Note: Facebook scraping is currently not working and needs revision.
+- **Rapid API**
+  - [Rapid API Console](https://rapidapi.com)
+  - Used for LinkedIn scraping.
 
-Information:
+---
 
-    For scraping data we use two places:
-        Apify: https://console.apify.com
-            Apify is used for Facebook and Instagram Scraping
-            Facebook is currently not working so we will need to revise on this one
-
-        Rapid API: https://rapidapi.com
-            Rapid API is used for our Linkedin Scraping
-
-At somepoint I need to make an actual ReadMe Page.
+## Note
+At some point, an actual README page needs to be created. Including data stack and functionality.
