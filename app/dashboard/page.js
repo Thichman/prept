@@ -13,6 +13,7 @@ export default function dashboard() {
     });
     const [summary, setSummary] = useState('');
     const [loading, setLoading] = useState(false);
+    const [currentStep, setCurrentStep] = useState(0);
 
     const handleChange = (e) => {
         setFormData({
@@ -72,29 +73,86 @@ export default function dashboard() {
         setLoading(false);
     };
 
+    const nextStep = () => {
+        setCurrentStep((prevStep) => (prevStep + 1) % 3);
+    };
+
+    const prevStep = () => {
+        setCurrentStep((prevStep) => (prevStep - 1 + 3) % 3);
+    };
+
+    const renderFormStep = () => {
+        switch (currentStep) {
+            case 0:
+                return (
+                    <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg transition-transform duration-500">
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Prospect Information</h2>
+                        <div className="mb-4">
+                            <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="linkdin" className="block text-gray-700">LinkedIn Link</label>
+                            <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                    </div>
+                );
+            case 1:
+                return (
+                    <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg transition-transform duration-500">
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
+                        <div className="mb-4">
+                            <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
+                            <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                        {/* <div className="mb-4">
+                            <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
+                            <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div> */}
+                    </div>
+                );
+            case 2:
+                return (
+                    <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg transition-transform duration-500">
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
+                        <form onSubmit={handleSubmit}>
+                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
+                        </form>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="max-w-[650px] mx-auto py-8">
-                <form onSubmit={handleSubmit} className="w-full bg-white px-10 py-8 rounded-xl shadow-md max-w-sm">
-                    <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Prospect Information</h2>
-                    <div className="mb-4">
-                        <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                <div className="relative w-full">
+                    <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+                        {renderFormStep()}
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="linkedin" className="block text-gray-700">LinkedIn Link</label>
-                        <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                    </div>
-                    {/* <div className="mb-4">
-                        <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
-                        <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-black" />
-                    </div> */}
-                    <div className="mb-4">
-                        <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                        <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                    </div>
-                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
-                </form>
+                    {currentStep > 0 && (
+                        <button onClick={prevStep} className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+                            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                                </svg>
+                                <span className="sr-only">Previous</span>
+                            </span>
+                        </button>
+                    )}
+                    {currentStep < 2 && (
+                        <button onClick={nextStep} className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+                            <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                                <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                </svg>
+                                <span className="sr-only">Next</span>
+                            </span>
+                        </button>
+                    )}
+                </div>
             </div>
             <div className="w-full max-w-[800px] min-w-[700px] p-4 rounded-lg mt-8">
                 {loading ? (
