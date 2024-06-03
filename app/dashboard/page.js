@@ -8,7 +8,9 @@ export default function dashboard() {
         facebook: '',
         instagram: '',
         linkdin: '',
-        fullName: ''
+        fullName: '',
+        companyPage: '',
+        articleLinks: [''],
     });
     const [summary, setSummary] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,19 +18,65 @@ export default function dashboard() {
     const [direction, setDirection] = useState('');
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        if (name.startsWith('articleLinks-')) {
+            const index = parseInt(name.split('-')[1], 10);
+            const updatedArticleLinks = [...formData.articleLinks];
+            updatedArticleLinks[index] = value;
+            setFormData({ ...formData, articleLinks: updatedArticleLinks });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         // Construct summary text
-        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin }
-        const returnPrompt = await mainScraper(dataSending)
-        await callModel(returnPrompt)
+        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
+
+        console.log(dataSending)
+        // const returnPrompt = await mainScraper(dataSending)
+        // await callModel(returnPrompt)
+    };
+
+    const callModel = async (readyPrompt) => {
+        const requestBody = {
+            parentData: readyPrompt,
+            fullName: formData.fullName,
+        };
+        const response = await fetch('../api/ai/prompt', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody),
+
+        })
+
+        const returnPDF = await response.json();
+        setSummary(returnPDF.kwargs.content);
+        setLoading(false);
+    };
+
+    //if the amount of steps change then we need to increase the final integer here as well as the integers below
+    const nextStep = () => {
+        setDirection('next');
+        setCurrentStep((prevStep) => (prevStep + 1) % 7);
+    };
+
+    const prevStep = () => {
+        setDirection('prev');
+        setCurrentStep((prevStep) => (prevStep - 1 + 7) % 7);
+    };
+
+    const addArticleLink = () => {
+        if (formData.articleLinks.length < 3) {
+            setFormData({ ...formData, articleLinks: [...formData.articleLinks, ''] });
+        }
     };
 
     const handleDownloadPDF = () => {
@@ -54,36 +102,6 @@ export default function dashboard() {
         doc.save(`${formData.fullName} summary.pdf`);
     };
 
-    const callModel = async (readyPrompt) => {
-        const requestBody = {
-            parentData: readyPrompt,
-            fullName: formData.fullName,
-        };
-        const response = await fetch('../api/ai/prompt', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody),
-
-        })
-
-        const returnPDF = await response.json();
-        setSummary(returnPDF.kwargs.content);
-        setLoading(false);
-    };
-
-    //if the amount of steps change then we need to increase the final integer here as well as the integers below
-    const nextStep = () => {
-        setDirection('next');
-        setCurrentStep((prevStep) => (prevStep + 1) % 4);
-    };
-
-    const prevStep = () => {
-        setDirection('prev');
-        setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4);
-    };
-
     const renderFormStep = () => {
         switch (currentStep) {
             case 0:
@@ -100,15 +118,20 @@ export default function dashboard() {
                             <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
                             <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
-                        <div className="mb-4">
-                            <label htmlFor="linkdin" className="block text-gray-700">LinkedIn Link</label>
-                            <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                        </div>
                     </div>
                 );
             case 2:
                 return (
                     <div key={2} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">LinkedIn Profile Link</h2>
+                        <div className="mb-4">
+                            <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
                         <div className="mb-4">
                             <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
@@ -120,9 +143,38 @@ export default function dashboard() {
                         </div> */}
                     </div>
                 );
-            case 3:
+            case 4:
                 return (
-                    <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                    <div key={4} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Company Website Page</h2>
+                        <div className="mb-4">
+                            <input type="text" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                    </div>
+                );
+            case 5:
+                return (
+                    <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Article Links</h2>
+                        {formData.articleLinks.map((link, index) => (
+                            <div key={index} className="mb-4">
+                                <input
+                                    type="text"
+                                    name={`articleLinks-${index}`}
+                                    value={link}
+                                    onChange={handleChange}
+                                    className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200"
+                                />
+                            </div>
+                        ))}
+                        {formData.articleLinks.length < 3 && (
+                            <button onClick={addArticleLink} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Add Link</button>
+                        )}
+                    </div>
+                );
+            case 6:
+                return (
+                    <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
                         <form onSubmit={handleSubmit}>
                             <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
@@ -149,7 +201,7 @@ export default function dashboard() {
                             </span>
                         </button>
                     )}
-                    {currentStep < 3 && (
+                    {currentStep < 6 && (
                         <button onClick={nextStep} className="absolute top-1/2 right-0 transform -translate-y-1/2 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                                 <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
