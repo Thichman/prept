@@ -16,8 +16,8 @@
    - Footer
    - Security pages
    - Policy page
-6. **Gamify the Interface**
-   - Create a fun, slide-panel UI similar to TurboTax card slides.
+6. **Finalize Page CSS and Functionality**
+   - Create a fun, slide-panel UI similar to TurboTax card slides. Add animation and change colors on everything to match.
 7. **Update Prompt**
    - Reflect all data points.
 8. **Update Payment Information**
