@@ -1,7 +1,7 @@
 export async function mainScraper(data) {
     let returnDataObject = {}; // Initialize an empty object to store the returned data
 
-    if (data.linkdin) {
+    if (data.linkedin) {
         const linkdinData = await fetch('../../api/dataScraping/linkdin', {
             method: 'POST',
             headers: {
@@ -41,7 +41,7 @@ export async function mainScraper(data) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data.instagram), // Fix the typo here, should be data.instagram instead of data.facebook
+            body: JSON.stringify(data.instagram),
         });
         if (!instagramData.ok) {
             throw new Error(`Failed to fetch data: ${instagramData.statusText}`);
@@ -49,6 +49,41 @@ export async function mainScraper(data) {
 
         const instagramReturnData = await instagramData.json()
         returnDataObject['instagram'] = instagramReturnData; // Add Instagram data to the object
+    }
+    if (data.companyPage) {
+        const companyData = await fetch('../../api/dataScraping/website', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data.companyPage), // Fix the typo here, should be data.instagram instead of data.facebook
+        });
+        if (!companyData.ok) {
+            throw new Error(`Failed to fetch data: ${companyData.statusText}`);
+        }
+
+        const companyReturnData = await companyData.json()
+        returnDataObject['companyData'] = companyReturnData; // Add Instagram data to the object
+    }
+
+    if (data.articleLinks && data.articleLinks.length > 0) {
+        returnDataObject['articles'] = [];
+        for (const link of data.articleLinks) {
+            if (link) { // Check if the link is not empty
+                const articleData = await fetch('../../api/dataScraping/website', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(link),
+                });
+                if (!articleData.ok) {
+                    throw new Error(`Failed to fetch data: ${articleData.statusText}`);
+                }
+                const articleReturnData = await articleData.json();
+                returnDataObject['articles'].push(articleReturnData);
+            }
+        }
     }
 
     return JSON.stringify(returnDataObject); // Return the object containing all the platform data
