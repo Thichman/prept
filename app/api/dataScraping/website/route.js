@@ -18,6 +18,7 @@ export async function POST(request) {
         "excludeUrlGlobs": [],
         "ignoreCanonicalUrl": false,
         "maxCrawlDepth": 20,
+        "maxCrawlPages": 1,
         "initialConcurrency": 0,
         "maxConcurrency": 200,
         "initialCookies": [],
@@ -54,7 +55,8 @@ export async function POST(request) {
             console.dir(item);
         });
 
-        return new Response(items);
+        const returnItems = JSON.stringify(items)
+        return new Response(returnItems);
     } catch (error) {
         console.error('Error running Apify actor:', error.message);
         return new Response("Error running Apify actor", { status: 500 });

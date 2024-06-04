@@ -23,11 +23,24 @@
 8. **Update Payment Information**
    - Ensure data scrapers do not stop working.
    - Keep an eye on this regularly.
-9. **Integrate New Data Sources**
-   - Incorporate links or articles found.
+
+---
+9. **Integrate New Data Sources** --CURRENTLY ACTIVE
+   - Users Linkedin Page
+   - Instagram Page
+   - Facebook Page
+   - Company Facebook page
+   - Articles (3)
+    **Update Prompt**
+    - Reflect all data points.
+---
+
 10. **Error Handeling**
    - In app error handeling needs to be completed.
    - All api errors should send me a direct email when that happens.
+
+10. **User Response and reviews**
+   - Add a page that allows the user to leave reciews on our software.
 
 ## Future Features
 1. **Simplified User Input**

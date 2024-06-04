@@ -7,8 +7,10 @@ export default function dashboard() {
     const [formData, setFormData] = useState({
         facebook: '',
         instagram: '',
-        linkdin: '',
-        fullName: ''
+        linkedin: '',
+        fullName: '',
+        companyPage: '',
+        articleLinks: [''],
     });
     const [summary, setSummary] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,42 +18,27 @@ export default function dashboard() {
     const [direction, setDirection] = useState('');
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        if (name.startsWith('articleLinks-')) {
+            const index = parseInt(name.split('-')[1], 10);
+            const updatedArticleLinks = [...formData.articleLinks];
+            updatedArticleLinks[index] = value;
+            setFormData({ ...formData, articleLinks: updatedArticleLinks });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         // Construct summary text
-        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin }
+        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
         const returnPrompt = await mainScraper(dataSending)
         await callModel(returnPrompt)
-    };
-
-    const handleDownloadPDF = () => {
-        const doc = new jsPDF();
-        const pageHeight = doc.internal.pageSize.height;
-        const margin = 10;
-        const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
-        let y = margin;
-
-        const addText = (text, x, y) => {
-            const splitText = doc.splitTextToSize(text, maxLineWidth);
-            for (let i = 0; i < splitText.length; i++) {
-                if (y + 10 > pageHeight - margin) {
-                    doc.addPage();
-                    y = margin;
-                }
-                doc.text(splitText[i], x, y);
-                y += 10;
-            }
-        };
-
-        addText(summary, margin, y);
-        doc.save(`${formData.fullName} summary.pdf`);
     };
 
     const callModel = async (readyPrompt) => {
@@ -76,12 +63,53 @@ export default function dashboard() {
     //if the amount of steps change then we need to increase the final integer here as well as the integers below
     const nextStep = () => {
         setDirection('next');
-        setCurrentStep((prevStep) => (prevStep + 1) % 4);
+        setCurrentStep((prevStep) => (prevStep + 1) % 7);
     };
 
     const prevStep = () => {
         setDirection('prev');
-        setCurrentStep((prevStep) => (prevStep - 1 + 4) % 4);
+        setCurrentStep((prevStep) => (prevStep - 1 + 7) % 7);
+    };
+
+    const addArticleLink = () => {
+        if (formData.articleLinks.length < 3) {
+            setFormData({ ...formData, articleLinks: [...formData.articleLinks, ''] });
+        }
+    };
+
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 10;
+        const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
+        let y = margin;
+
+        const logoText = 'Prept.AI';
+        doc.setFontSize(20);
+        doc.setTextColor('#228B22'); // Main green color
+        doc.text(logoText, margin, y);
+
+        // Adjust y position for the next text
+        y += 20; // Increase the y value to create some space below the logo
+
+        // Reset font size and text color for the main content
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0); // Black color
+
+        const addText = (text, x, y) => {
+            const splitText = doc.splitTextToSize(text, maxLineWidth);
+            for (let i = 0; i < splitText.length; i++) {
+                if (y + 10 > pageHeight - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+                doc.text(splitText[i], x, y);
+                y += 10;
+            }
+        };
+
+        addText(summary, margin, y);
+        doc.save(`${formData.fullName} summary.pdf`);
     };
 
     const renderFormStep = () => {
@@ -100,19 +128,24 @@ export default function dashboard() {
                             <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
                             <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
-                        <div className="mb-4">
-                            <label htmlFor="linkdin" className="block text-gray-700">LinkedIn Link</label>
-                            <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                        </div>
                     </div>
                 );
             case 2:
                 return (
                     <div key={2} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">LinkedIn Profile Link</h2>
+                        <div className="mb-4">
+                            <input type="url" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
                         <div className="mb-4">
                             <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                            <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                            <input type="url" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
                         {/* <div className="mb-4">
                             <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
@@ -120,13 +153,61 @@ export default function dashboard() {
                         </div> */}
                     </div>
                 );
-            case 3:
+            case 4:
                 return (
-                    <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
-                        <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
-                        <form onSubmit={handleSubmit}>
-                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
-                        </form>
+                    <div key={4} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Company Website Page</h2>
+                        <div className="mb-4">
+                            <input type="url" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                        </div>
+                    </div>
+                );
+            case 5:
+                return (
+                    <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        <h2 className="text-xl text-gray-800 font-bold mb-4">Article Links</h2>
+                        {formData.articleLinks.map((link, index) => (
+                            <div key={index} className="mb-4">
+                                <input
+                                    type="url"
+                                    name={`articleLinks-${index}`}
+                                    value={link}
+                                    onChange={handleChange}
+                                    className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200"
+                                />
+                            </div>
+                        ))}
+                        {formData.articleLinks.length < 3 && (
+                            <button onClick={addArticleLink} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Add Link</button>
+                        )}
+                    </div>
+                );
+            case 6:
+                const isAnyFieldFilled = Object.keys(formData).some(key => key !== 'fullName' && typeof formData[key] === 'string' && formData[key].trim() !== '');
+                return (
+                    <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                        {isAnyFieldFilled ? (
+                            <>
+                                <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
+                                <ul className="list-disc list-inside text-gray-600">
+                                    {Object.entries(formData).map(([key, value]) => (
+                                        // Only render if the value is truthy and key is not "fullName"
+                                        value && key !== "fullName" && (
+                                            <li key={key}>
+                                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
+                                                {' '}
+                                                {Array.isArray(value) ? value.join(', ') : value}
+                                            </li>
+                                        )
+                                    ))}
+                                </ul>
+                                <form onSubmit={handleSubmit}>
+                                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
+                                </form>
+                            </>
+                        ) : (
+                            <p className="text-xl text-gray-800 font-bold mb-4 w-80">At least 1 piece of data is required.</p>
+                        )}
                     </div>
                 );
             default:
@@ -149,7 +230,7 @@ export default function dashboard() {
                             </span>
                         </button>
                     )}
-                    {currentStep < 3 && (
+                    {currentStep < 6 && (
                         <button onClick={nextStep} className="absolute top-1/2 right-0 transform -translate-y-1/2 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                                 <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
