@@ -7,7 +7,7 @@ export default function dashboard() {
     const [formData, setFormData] = useState({
         facebook: '',
         instagram: '',
-        linkdin: '',
+        linkedin: '',
         fullName: '',
         companyPage: '',
         articleLinks: [''],
@@ -36,11 +36,9 @@ export default function dashboard() {
         e.preventDefault();
         setLoading(true);
         // Construct summary text
-        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkdin: formData.linkdin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
-
-        console.log(dataSending)
-        // const returnPrompt = await mainScraper(dataSending)
-        // await callModel(returnPrompt)
+        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
+        const returnPrompt = await mainScraper(dataSending)
+        await callModel(returnPrompt)
     };
 
     const callModel = async (readyPrompt) => {
@@ -86,6 +84,18 @@ export default function dashboard() {
         const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
         let y = margin;
 
+        const logoText = 'Prept.AI';
+        doc.setFontSize(20);
+        doc.setTextColor('#228B22'); // Main green color
+        doc.text(logoText, margin, y);
+
+        // Adjust y position for the next text
+        y += 20; // Increase the y value to create some space below the logo
+
+        // Reset font size and text color for the main content
+        doc.setFontSize(12);
+        doc.setTextColor(0, 0, 0); // Black color
+
         const addText = (text, x, y) => {
             const splitText = doc.splitTextToSize(text, maxLineWidth);
             for (let i = 0; i < splitText.length; i++) {
@@ -125,7 +135,7 @@ export default function dashboard() {
                     <div key={2} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">LinkedIn Profile Link</h2>
                         <div className="mb-4">
-                            <input type="text" id="linkdin" name="linkdin" value={formData.linkdin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                            <input type="url" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
                     </div>
                 );
@@ -135,7 +145,7 @@ export default function dashboard() {
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
                         <div className="mb-4">
                             <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                            <input type="text" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                            <input type="url" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
                         {/* <div className="mb-4">
                             <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
@@ -148,7 +158,7 @@ export default function dashboard() {
                     <div key={4} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Company Website Page</h2>
                         <div className="mb-4">
-                            <input type="text" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+                            <input type="url" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
                     </div>
                 );
@@ -159,7 +169,7 @@ export default function dashboard() {
                         {formData.articleLinks.map((link, index) => (
                             <div key={index} className="mb-4">
                                 <input
-                                    type="text"
+                                    type="url"
                                     name={`articleLinks-${index}`}
                                     value={link}
                                     onChange={handleChange}
@@ -173,12 +183,31 @@ export default function dashboard() {
                     </div>
                 );
             case 6:
+                const isAnyFieldFilled = Object.keys(formData).some(key => key !== 'fullName' && typeof formData[key] === 'string' && formData[key].trim() !== '');
                 return (
                     <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
-                        <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
-                        <form onSubmit={handleSubmit}>
-                            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
-                        </form>
+                        {isAnyFieldFilled ? (
+                            <>
+                                <h2 className="text-xl text-gray-800 font-bold mb-4">Review and Submit</h2>
+                                <ul className="list-disc list-inside text-gray-600">
+                                    {Object.entries(formData).map(([key, value]) => (
+                                        // Only render if the value is truthy and key is not "fullName"
+                                        value && key !== "fullName" && (
+                                            <li key={key}>
+                                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
+                                                {' '}
+                                                {Array.isArray(value) ? value.join(', ') : value}
+                                            </li>
+                                        )
+                                    ))}
+                                </ul>
+                                <form onSubmit={handleSubmit}>
+                                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
+                                </form>
+                            </>
+                        ) : (
+                            <p className="text-xl text-gray-800 font-bold mb-4 w-80">At least 1 piece of data is required.</p>
+                        )}
                     </div>
                 );
             default:
