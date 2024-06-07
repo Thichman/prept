@@ -2,7 +2,7 @@ const axios = require('axios');
 
 export async function POST(request) {
     const requestData = await request.json();
-
+    console.log(requestData)
     const options = {
         method: 'POST',
         url: 'https://linkedin-data-scraper.p.rapidapi.com/person',
