@@ -6,7 +6,8 @@
 ## Tasks for Final Production
 1. **Set Up Payment System**
    - Implement using [Stripe](https://stripe.com).
-2. **Build Chat AI Interface**
+
+2. **Build Chat AI Interface** -- CURRENTLY ACTIVE
    - Enhance user engagement.
 3. **Push Scraped Data to Database**
    - Automate data transfer.
@@ -25,7 +26,7 @@
    - Keep an eye on this regularly.
 
 ---
-9. **Integrate New Data Sources** --CURRENTLY ACTIVE
+9. **Integrate New Data Sources** -- DONE 
    - Users Linkedin Page
    - Instagram Page
    - Facebook Page
