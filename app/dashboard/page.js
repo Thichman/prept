@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { mainScraper } from "./data-scraping/main-scraper";
 import { jsPDF } from "jspdf";
+import ChatInterface from "./components/chat";
 
 export default function dashboard() {
     const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ export default function dashboard() {
     const [loading, setLoading] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
     const [direction, setDirection] = useState('');
+    const [showAI, setShowAI] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -110,6 +112,10 @@ export default function dashboard() {
 
         addText(summary, margin, y);
         doc.save(`${formData.fullName} summary.pdf`);
+    };
+
+    const handleShowAI = () => {
+        setShowAI(true);
     };
 
     const renderFormStep = () => {
@@ -266,10 +272,17 @@ export default function dashboard() {
                                 <p key={index}>{line}</p>
                             ))}
                         </div>
-                        <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
+                        <div className="flex items-center justify-center space-x-4">
+                            <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
+                            <button onClick={handleShowAI} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Chat with AI</button>
+                        </div>
                     </div>
                 ) : null}
+            </div>
+            <div className="flex items-center justify-center w-full">
+                {showAI && <ChatInterface context={summary} />}
             </div>
         </div>
     );
 };
+
