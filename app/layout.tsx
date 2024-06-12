@@ -51,10 +51,10 @@ export default async function RootLayout({
                 &copy; {new Date().getFullYear()} Prept AI. All rights reserved.
               </div>
               <div className="flex space-x-4 mb-4 md:mb-0">
-                <a href="/about" className="text-gray-400 hover:text-white">About Us</a>
-                <a href="/contact" className="text-gray-400 hover:text-white">Contact</a>
-                <a href="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</a>
-                <a href="/terms" className="text-gray-400 hover:text-white">Terms of Service</a>
+                <a href="https://www.arctechautomations.com/about" className="text-gray-400 hover:text-white">About Us</a>
+                <a href="https://www.arctechautomations.com/contact" className="text-gray-400 hover:text-white">Contact</a>
+                <a href="/pages/privacy" className="text-gray-400 hover:text-white">Privacy Policy</a>
+                <a href="/pages/terms-of-service" className="text-gray-400 hover:text-white">Terms of Service</a>
               </div>
               <div className="flex space-x-4">
                 {/* <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white">
