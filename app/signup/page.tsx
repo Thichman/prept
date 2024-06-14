@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { createTestUser } from "../dashboard/test-functions/createTestUser"
 
 export default async function signup({
     searchParams,
@@ -21,7 +22,7 @@ export default async function signup({
             email,
             password,
             options: {
-                emailRedirectTo: `${origin}/auth/callback`,
+                emailRedirectTo: `${origin}/login`,
             },
         });
 
@@ -29,6 +30,8 @@ export default async function signup({
             console.log(error)
             return redirect("/signup?message=Could not authenticate user");
         }
+        //delete this function after the test phase
+        await createTestUser(email);
         return redirect("/signup?message=Success, Check email to finish authentificationn then you can go back and sign");
     };
 

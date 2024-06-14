@@ -1,9 +1,13 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mainScraper } from "./data-scraping/main-scraper";
 import { jsPDF } from "jspdf";
 import ChatInterface from "./components/chat";
 
+//imports to delete after test phase
+import { increaseCallCount } from "./test-functions/increaseCallCount"
+import { callNumber } from "./test-functions/callNumber"
+import { useRouter } from 'next/navigation'
 export default function dashboard() {
     const [formData, setFormData] = useState({
         facebook: '',
@@ -18,6 +22,22 @@ export default function dashboard() {
     const [currentStep, setCurrentStep] = useState(0);
     const [direction, setDirection] = useState('');
     const [showAI, setShowAI] = useState(false);
+
+    // delete after test phase
+    const router = useRouter();
+
+    useEffect(() => {
+        const checkCallNumber = async () => {
+            const result = await callNumber();
+            if (result >= 5) {
+                router.push("/feedbackForm");
+            }
+        };
+        if (loading) {
+            checkCallNumber();
+        }
+    }, [loading]);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +61,9 @@ export default function dashboard() {
         const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
         const returnPrompt = await mainScraper(dataSending)
         await callModel(returnPrompt)
+
+        //delete below functions after test phase
+        await increaseCallCount();
     };
 
     const callModel = async (readyPrompt) => {

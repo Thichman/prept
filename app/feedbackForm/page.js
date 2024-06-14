@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { sendToDatabase } from './sendToDatabase'
-export default function FeedbackForm() {
+export default function feedbackForm() {
     const [formData, setFormData] = useState({
         companyRole: '',
         likelihoodToUse: '',
