@@ -36,9 +36,17 @@ export default async function RootLayout({
               </div>
             </Link>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3">
             <AuthButton />
             <UserMenu user={user} />
+            {!user &&
+              <Link
+                href="/signup"
+                className="py-2 px-3 flex rounded-md no-underline bg-prept-color-main-green hover:bg-prept-color-background-lighter-green"
+              >
+                Sign Up
+              </Link>
+            }
           </div>
         </header>
         <main className="min-h-screen flex flex-col items-center pt-4 pb-6">
