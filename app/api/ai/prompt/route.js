@@ -61,7 +61,7 @@ export async function POST(request) {
           • Organized into clear, distinct sections for quick reference
           • Use paragraphs and bullet points where appropriate for clarity
           • Do not include any links to anything.
-          • Do not include any weird characters including '*', '#', '%' ...
+          • Your response should NEVER include any weird characters including '*', '#', '%' ...
           • FORMATTING IS VERY IMPORTANT DO NOT FORGET ANY OF THIS WHEN RETURNING YOUR RESPONSE
           
         Goal: This document should all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. This should be a long

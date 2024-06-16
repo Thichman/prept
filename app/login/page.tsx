@@ -91,6 +91,12 @@ export default function Login({
         >
           Sign Up
         </button>
+        {/* <Link
+          href="/login/reset-password"
+          className="py-2 px-3 flex rounded-md no-underline bg-blue-700 hover:bg-blue-600 items-center justify-center"
+        >
+          Reset Password
+        </Link> */}
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
             {searchParams.message}

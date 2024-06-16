@@ -1,7 +1,6 @@
 export async function mainScraper(data) {
     let returnDataObject = {}; // Initialize an empty object to store the returned data
     if (data.linkedin) {
-        console.log(data.linkedin)
         const linkdinData = await fetch('../../api/dataScraping/linkdin', {
             method: 'POST',
             headers: {
