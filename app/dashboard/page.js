@@ -270,7 +270,7 @@ export default function dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className={"fixed left-0 bottom-0 h-[715px] bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
+            <div className={"fixed left-0 bottom-0 h-[914px] bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
                 {/* Content inside sidebar */}
                 <div style={contentStyle}>
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Your Dashboard</h1>
