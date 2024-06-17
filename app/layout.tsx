@@ -70,13 +70,13 @@ export default async function RootLayout({
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24H12.81V14.708h-3.48v-3.618h3.48V8.291c0-3.451 2.103-5.329 5.171-5.329 1.471 0 2.736.109 3.102.159v3.598l-2.127.001c-1.664 0-1.988.79-1.988 1.948v2.555h3.975l-.519 3.618h-3.457V24h6.78c.732 0 1.325-.593 1.325-1.324V1.325C24 .593 23.407 0 22.675 0z" />
                   </svg>
-                </a>
-                <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-white">
+                </a> */}
+                <a href="https://x.com/ArcTech_Offical" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                   <span className="sr-only">Twitter</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.608 1.794-1.574 2.163-2.723-.949.555-2.002.959-3.127 1.184-.897-.959-2.177-1.555-3.594-1.555-2.717 0-4.917 2.2-4.917 4.917 0 .385.045.761.127 1.122C7.691 8.094 4.066 6.13 1.64 3.161c-.422.722-.666 1.561-.666 2.475 0 1.708.869 3.215 2.188 4.099-.806-.026-1.566-.247-2.229-.616v.062c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.621-.031-.921-.086.631 1.953 2.445 3.376 4.604 3.417-1.68 1.316-3.808 2.1-6.104 2.1-.398 0-.79-.023-1.177-.069 2.188 1.396 4.768 2.211 7.557 2.211 9.054 0 14.001-7.496 14.001-13.986 0-.213-.005-.425-.014-.637.961-.695 1.8-1.562 2.462-2.549z" />
                   </svg>
-                </a> */}
+                </a>
                 <a href="https://www.linkedin.com/company/100270847" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                   <span className="sr-only">LinkedIn</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">

@@ -13,7 +13,7 @@ export default async function signup({
     const signUp = async (formData: FormData) => {
         "use server";
 
-        const origin = headers().get("origin");
+        const origin = "https://preptai.arctechautomations.com";
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const supabase = createClient();
@@ -32,7 +32,7 @@ export default async function signup({
         }
         //delete this function after the test phase
         await createTestUser(email);
-        return redirect("/signup?message=Success, Check email to finish authentificationn then you can go back and sign");
+        return redirect("/signup?message=Success, Check email to finish signing up!");
     };
 
     return (

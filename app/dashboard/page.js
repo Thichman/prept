@@ -157,6 +157,7 @@ export default function dashboard() {
                             <label htmlFor="fullName" className="block text-gray-700">Full Name</label>
                             <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
+                        <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the full name of the prospect.</p>
                     </div>
                 );
             case 2:
@@ -166,6 +167,7 @@ export default function dashboard() {
                         <div className="mb-4">
                             <input type="url" id="linkedin" name="linkedin" value={formData.linkedin} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
+                        <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the LinkedIn profile URL of the prospect. You can find this by visiting their LinkedIn page and copying the URL from the address bar.</p>
                     </div>
                 );
             case 3:
@@ -180,6 +182,8 @@ export default function dashboard() {
                             <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
                             <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div> */}
+                        <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the Instagram profile URL of the prospect. You can find this by visiting their Instagram page and copying the URL from the address bar.</p>
+
                     </div>
                 );
             case 4:
@@ -189,6 +193,7 @@ export default function dashboard() {
                         <div className="mb-4">
                             <input type="url" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
                         </div>
+                        <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the URL of the company's website page. This helps us gather more information about the business.</p>
                     </div>
                 );
             case 5:
@@ -209,6 +214,7 @@ export default function dashboard() {
                         {formData.articleLinks.length < 3 && (
                             <button onClick={addArticleLink} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Add Link</button>
                         )}
+                        <p className="text-sm text-gray-600 mt-4 w-96 items-center text-center">Add links to any articles or news items that pertain to the individual. This can include news articles, blog posts, or other relevant content.</p>
                     </div>
                 );
             case 6:
@@ -244,8 +250,54 @@ export default function dashboard() {
         }
     };
 
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const toggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+    };
+
+    const sidebarStyle = {
+        width: sidebarOpen ? '300px' : '0px', // Adjusted width when closed
+        transition: 'width 0.3s ease',
+        overflow: 'scroll',
+        opacity: sidebarOpen ? '100' : '0'
+    };
+
+    const contentStyle = {
+        opacity: sidebarOpen ? '1' : '0', // Show content only when sidebar is open
+        transition: 'opacity 0.3s ease',
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className={"fixed left-0 bottom-0 h-[715px] bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
+                {/* Content inside sidebar */}
+                <div style={contentStyle}>
+                    <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Your Dashboard</h1>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Here is how you can effectively use this dashboard to gather comprehensive information:
+                    </p>
+                    <ul className="list-disc list-inside text-gray-600 mb-4">
+                        <li>Enter prospect information such as their full name and LinkedIn profile link.</li>
+                        <li>Add social media links like Instagram to gather additional insights.</li>
+                        <li>Include the company website page to enrich your data collection process.</li>
+                        <li>Link any relevant articles or news items related to the individual.</li>
+                        <li>Review and submit the form to generate a comprehensive document.</li>
+                    </ul>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Once submitted, you'll receive a detailed document with all gathered information. You can then interact further using our chatbot to ask questions, draft custom emails, and more.
+                    </p>
+                    <p className="text-lg text-gray-600">
+                        Explore the dashboard features below to get started.
+                    </p>
+                </div>
+                {/* Toggle button */}
+                <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none" onClick={toggleSidebar}>
+                    <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M5.293 5.293a1 1 0 0 1 1.414 0L10 8.586l3.293-3.293a1 1 0 1 1 1.414 1.414L11.414 10l3.293 3.293a1 1 0 0 1-1.414 1.414L10 11.414l-3.293 3.293a1 1 0 1 1-1.414-1.414L8.586 10 5.293 6.707a1 1 0 0 1 0-1.414z" clipRule="evenodd" />
+                    </svg>
+                </button>
+            </div>
             <div className="max-w-[650px] mx-auto py-8">
                 <div className="relative w-full overflow-hidden">
                     {renderFormStep()}
@@ -305,7 +357,7 @@ export default function dashboard() {
             <div className="flex items-center justify-center w-full">
                 {showAI && <ChatInterface context={summary} />}
             </div>
-        </div>
+        </div >
     );
 };
 
