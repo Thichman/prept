@@ -95,7 +95,8 @@ export default function UserProfile() {
                     <h2 className="text-xl font-semibold mb-4">Subscription Details</h2>
                     <Card
                         svg={<FaCreditCard />}
-                        text={`Current Plan: ${user.subscription}`}
+                        // text={`Current Plan: ${user.subscription}`}
+                        text={`Current Plan: Test User`}
                     />
                 </div>
             </div>

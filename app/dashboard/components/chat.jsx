@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 const ChatInterface = ({ context }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [awaitReturn, setAwaitReturn] = useState(false)
 
     useEffect(() => {
         if (context) {
@@ -14,12 +15,13 @@ const ChatInterface = ({ context }) => {
     const handleSend = async () => {
         if (!input.trim()) return;
 
+        setAwaitReturn(true)
         const newMessage = {
             text: input,
             position: 'right',
             type: 'text',
         };
-
+        setInput('');
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
 
@@ -44,8 +46,7 @@ const ChatInterface = ({ context }) => {
         } catch (error) {
             console.error('Error sending message:', error);
         }
-
-        setInput('');
+        setAwaitReturn(false)
     };
 
     return (
@@ -68,7 +69,9 @@ const ChatInterface = ({ context }) => {
                     className="flex-1 p-2 border rounded-l-lg text-black"
                     placeholder="Type your message..."
                 />
-                <button onClick={handleSend} className="bg-blue-500 text-white p-2 rounded-r-lg">Send</button>
+                {!awaitReturn &&
+                    <button onClick={handleSend} className="bg-blue-500 text-white p-2 rounded-r-lg">Send</button>
+                }
             </div>
         </div>
     );

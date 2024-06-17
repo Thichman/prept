@@ -36,6 +36,7 @@ export default function dashboard() {
         if (loading) {
             checkCallNumber();
         }
+        console.log(formData)
     }, [loading]);
 
 
@@ -56,12 +57,12 @@ export default function dashboard() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setShowAI(false)
         setLoading(true);
         // Construct summary text
         const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
         const returnPrompt = await mainScraper(dataSending)
         await callModel(returnPrompt)
-
         //delete below functions after test phase
         await increaseCallCount();
     };
@@ -214,7 +215,7 @@ export default function dashboard() {
                         {formData.articleLinks.length < 3 && (
                             <button onClick={addArticleLink} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Add Link</button>
                         )}
-                        <p className="text-sm text-gray-600 mt-4 w-96 items-center text-center">Add links to any articles or news items that pertain to the individual. This can include news articles, blog posts, or other relevant content.</p>
+                        <p className="text-sm text-gray-600 mt-4 w-96 items-center text-center">Add links to any articles or news items that pertain to the individual. This can include news articles, blog posts, or other relevant content. This is NOT a primary datapoint.</p>
                     </div>
                 );
             case 6:
