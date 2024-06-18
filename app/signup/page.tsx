@@ -18,6 +18,11 @@ export default async function signup({
         const password = formData.get("password") as string;
         const supabase = createClient();
 
+        // check if user already exists
+        const userList = supabase.auth.admin.listUsers()
+        // if (userLi) {
+
+        // }
         const { error } = await supabase.auth.signUp({
             email,
             password,
