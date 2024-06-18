@@ -87,14 +87,16 @@ export default function dashboard() {
     };
 
     //if the amount of steps change then we need to increase the final integer here as well as the integers below
+    // AKA the nextStep and prevStep functions if there are 5 cards the number should be 6
+    // Also remember to change the tsx variable number on line 317
     const nextStep = () => {
         setDirection('next');
-        setCurrentStep((prevStep) => (prevStep + 1) % 7);
+        setCurrentStep((prevStep) => (prevStep + 1) % 6);
     };
 
     const prevStep = () => {
         setDirection('prev');
-        setCurrentStep((prevStep) => (prevStep - 1 + 7) % 7);
+        setCurrentStep((prevStep) => (prevStep - 1 + 6) % 6);
     };
 
     const addArticleLink = () => {
@@ -171,25 +173,25 @@ export default function dashboard() {
                         <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the LinkedIn profile URL of the prospect. You can find this by visiting their LinkedIn page and copying the URL from the address bar.</p>
                     </div>
                 );
+            // case 3:
+            //     return (
+            //         <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+            //             <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
+            //             <div className="mb-4">
+            //                 <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
+            //                 <input type="url" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+            //             </div>
+            //             {/* <div className="mb-4">
+            //                 <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
+            //                 <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
+            //             </div> */}
+            //             <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the Instagram profile URL of the prospect. You can find this by visiting their Instagram page and copying the URL from the address bar.</p>
+
+            //         </div>
+            //     );
             case 3:
                 return (
                     <div key={3} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
-                        <h2 className="text-xl text-gray-800 font-bold mb-4">Enter Social Media Links</h2>
-                        <div className="mb-4">
-                            <label htmlFor="instagram" className="block text-gray-700">Instagram Link</label>
-                            <input type="url" id="instagram" name="instagram" value={formData.instagram} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                        </div>
-                        {/* <div className="mb-4">
-                            <label htmlFor="facebook" className="block text-gray-700">Facebook Link</label>
-                            <input type="text" id="facebook" name="facebook" value={formData.facebook} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
-                        </div> */}
-                        <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the Instagram profile URL of the prospect. You can find this by visiting their Instagram page and copying the URL from the address bar.</p>
-
-                    </div>
-                );
-            case 4:
-                return (
-                    <div key={4} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Company Website Page</h2>
                         <div className="mb-4">
                             <input type="url" id="companyPage" name="companyPage" value={formData.companyPage} onChange={handleChange} className="w-60 rounded-md border-gray-300 shadow-sm text-black bg-gray-200" />
@@ -197,9 +199,9 @@ export default function dashboard() {
                         <p className="text-sm text-gray-600 mt-1 w-96 items-center text-center">Please enter the URL of the company's website page. This helps us gather more information about the business.</p>
                     </div>
                 );
-            case 5:
+            case 4:
                 return (
-                    <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
+                    <div key={4} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
                         <h2 className="text-xl text-gray-800 font-bold mb-4">Article Links</h2>
                         {formData.articleLinks.map((link, index) => (
                             <div key={index} className="mb-4">
@@ -218,7 +220,7 @@ export default function dashboard() {
                         <p className="text-sm text-gray-600 mt-4 w-96 items-center text-center">Add links to any articles or news items that pertain to the individual. This can include news articles, blog posts, or other relevant content. This is NOT a primary datapoint.</p>
                     </div>
                 );
-            case 6:
+            case 5:
                 const isAnyFieldFilled = Object.keys(formData).some(key => key !== 'fullName' && typeof formData[key] === 'string' && formData[key].trim() !== '');
                 return (
                     <div key={5} className={`form-step bg-white border border-gray-300 p-6 rounded-lg shadow-lg w-[600px] h-[400px] flex flex-col items-center justify-center transition-transform ${direction === 'next' ? 'slide-left' : 'slide-right'}`}>
@@ -228,7 +230,7 @@ export default function dashboard() {
                                 <ul className="list-disc list-inside text-gray-600">
                                     {Object.entries(formData).map(([key, value]) => (
                                         // Only render if the value is truthy and key is not "fullName"
-                                        value && key !== "fullName" && (
+                                        value && key !== "fullName" && key !== "articleLinks" && (
                                             <li key={key}>
                                                 {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:
                                                 {' '}
@@ -312,7 +314,7 @@ export default function dashboard() {
                             </span>
                         </button>
                     )}
-                    {currentStep < 6 && (
+                    {currentStep < 5 && (
                         <button onClick={nextStep} className="absolute top-1/2 right-0 transform -translate-y-1/2 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
                             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                                 <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
