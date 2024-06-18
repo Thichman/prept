@@ -30,7 +30,7 @@ export default async function RootLayout({
     }
 
     return (
-        <section className="bg-prept-color-header-gray-black text-white w-screen">
+        <section className="text-white w-screen">
             <div className="min-h-screen flex flex-col items-center">
                 {children}
             </div>

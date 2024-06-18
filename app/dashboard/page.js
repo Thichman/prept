@@ -272,7 +272,7 @@ export default function dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className={"fixed left-0 bottom-0 h-[914px] bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
+            <div className={"absolute left-0 h-4/5 bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
                 {/* Content inside sidebar */}
                 <div style={contentStyle}>
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Your Dashboard</h1>
@@ -291,9 +291,6 @@ export default function dashboard() {
                     </p>
                     <p className="text-lg text-gray-600 mb-4">
                         Once submitted, you'll receive a detailed document with all gathered information. You can then interact further using our chatbot to ask questions, draft custom emails, and more.
-                    </p>
-                    <p className="text-lg text-gray-600">
-                        Explore the dashboard features below to get started.
                     </p>
                 </div>
                 {/* Toggle button */}

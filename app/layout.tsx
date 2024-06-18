@@ -27,8 +27,8 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-prept-color-header-gray-black text-black">
-        <header className="flex items-center justify-between h-20 w-full bg-gray-300 px-4">
+      <body className="bg-black text-black">
+        <header className="flex items-center justify-between h-20 w-full bg-white px-4">
           <div className="flex items-center">
             <Link href={"/"}>
               <div className='text-4xl text-prept-color-main-green'>
@@ -52,7 +52,7 @@ export default async function RootLayout({
         <main className="min-h-screen flex flex-col items-center pt-4 pb-6">
           {children}
         </main>
-        <footer className="w-full border-t border-gray-300 text-white py-8 px-4">
+        <footer className="w-full border-t border-gray-300 text-white py-8 px-4 bg-black">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:justify-between items-center">
               <div className="text-sm mb-4 md:mb-0">
