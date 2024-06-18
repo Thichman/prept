@@ -1,3 +1,4 @@
+export const maxDuration = 30;
 import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "langchain/schema";
 
