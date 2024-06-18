@@ -36,7 +36,6 @@ export default function dashboard() {
         if (loading) {
             checkCallNumber();
         }
-        console.log(formData)
     }, [loading]);
 
 
