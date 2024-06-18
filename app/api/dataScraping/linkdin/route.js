@@ -1,3 +1,4 @@
+export const maxDuration = 60;
 const axios = require('axios');
 
 export async function POST(request) {

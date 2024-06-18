@@ -1,3 +1,4 @@
+export const maxDuration = 60;
 import { ApifyClient } from 'apify-client';
 
 export async function POST(request) {

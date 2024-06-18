@@ -281,11 +281,14 @@ export default function dashboard() {
                     </p>
                     <ul className="list-disc list-inside text-gray-600 mb-4">
                         <li>Enter prospect information such as their full name and LinkedIn profile link.</li>
-                        <li>Add social media links like Instagram to gather additional insights.</li>
+                        {/* <li>Add social media links like Instagram to gather additional insights.</li> */}
                         <li>Include the company website page to enrich your data collection process.</li>
                         <li>Link any relevant articles or news items related to the individual.</li>
                         <li>Review and submit the form to generate a comprehensive document.</li>
                     </ul>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Note: The more data points you submit, the longer it will take to generate the document.
+                    </p>
                     <p className="text-lg text-gray-600 mb-4">
                         Once submitted, you'll receive a detailed document with all gathered information. You can then interact further using our chatbot to ask questions, draft custom emails, and more.
                     </p>
