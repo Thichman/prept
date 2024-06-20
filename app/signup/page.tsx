@@ -14,7 +14,7 @@ export default async function signup({
         "use server";
 
         // need to check how the origin is used in the supabase auth
-        const origin = "https://preptai.arctechautomations.com/signup";
+        const origin = "https://preptai.arctechautomations.com/login";
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
         const supabase = createClient();
@@ -28,7 +28,7 @@ export default async function signup({
             email,
             password,
             options: {
-                emailRedirectTo: `${origin}/login`,
+                emailRedirectTo: `${origin}`,
             },
         });
 
