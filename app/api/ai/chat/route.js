@@ -19,7 +19,7 @@ export async function POST(req) {
                     content: msg.text,
                 })),
             ],
-            max_tokens: 150,
+            max_tokens: 350,
             temperature: 0.7,
             top_p: 1.0,
             frequency_penalty: 0.0,
