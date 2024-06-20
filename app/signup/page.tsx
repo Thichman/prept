@@ -47,7 +47,7 @@ export default function Signup({ searchParams }: { searchParams: { message: stri
                 </label>
                 <div className="relative mb-6">
                     <input
-                        className="rounded-md px-4 py-2 bg-inherit border w-full"
+                        className="rounded-md px-4 py-2 bg-inherit border w-full text-white"
                         type={showPassword ? "text" : "password"}
                         name="password"
                         placeholder="••••••••"
@@ -68,7 +68,7 @@ export default function Signup({ searchParams }: { searchParams: { message: stri
                 </label>
                 <div className="relative mb-6">
                     <input
-                        className="rounded-md px-4 py-2 bg-inherit border w-full"
+                        className="rounded-md px-4 py-2 bg-inherit border w-full text-white"
                         type={showPassword ? "text" : "password"}
                         name="confirmPassword"
                         placeholder="••••••••"
