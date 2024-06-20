@@ -22,6 +22,7 @@ export default function dashboard() {
     const [currentStep, setCurrentStep] = useState(0);
     const [direction, setDirection] = useState('');
     const [showAI, setShowAI] = useState(false);
+    const [scrapedData, setScrapedData] = useState();
 
     // delete after test phase
     const router = useRouter();
@@ -61,6 +62,7 @@ export default function dashboard() {
         // Construct summary text
         const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
         const returnPrompt = await mainScraper(dataSending)
+        setScrapedData(returnPrompt)
         await callModel(returnPrompt)
         //delete below functions after test phase
         await increaseCallCount();
@@ -357,7 +359,7 @@ export default function dashboard() {
                 ) : null}
             </div>
             <div className="flex items-center justify-center w-full">
-                {showAI && <ChatInterface context={summary} />}
+                {showAI && <ChatInterface context={scrapedData} />}
             </div>
         </div >
     );
