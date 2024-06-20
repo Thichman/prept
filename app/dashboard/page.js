@@ -85,7 +85,7 @@ export default function dashboard() {
         setLoading(false);
     };
 
-    //if the amount of steps change then we need to increase the final integer here as well as the integers below
+    // if the amount of steps change then we need to increase the final integer here as well as the integers below
     // AKA the nextStep and prevStep functions if there are 5 cards the number should be 6
     // Also remember to change the tsx variable number on line 317
     const nextStep = () => {

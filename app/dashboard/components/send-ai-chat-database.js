@@ -1,4 +1,4 @@
-// This file can be deleted when the test version is over
+// This file should be deleted when the test version is over
 
 'use server'
 import { createClient } from '@supabase/supabase-js'

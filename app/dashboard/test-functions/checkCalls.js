@@ -11,6 +11,10 @@ export async function checkCalls() {
     } = await supabaseUser.auth.getUser();
     const email = user.email
 
+    if (email === 'tyson@arctechautomations.com' && email === 'evelioperez335@gmail.com' && email === 'kstocks@arctechautomations.com') {
+        return false;
+    }
+
     const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
     let { data: data, error } = await supabase
         .from('test-users')

@@ -1,5 +1,6 @@
 export const maxDuration = 60;
 import { ChatOpenAI } from "@langchain/openai";
+import { error } from "console";
 import { HumanMessage } from "langchain/schema";
 
 const runLLMChain = async (prompt) => {
@@ -79,5 +80,10 @@ export async function POST(request) {
   }
 
   const result = await runLLMChain(prompt);
+  if (error) {
+    console.error('Error in OpenAI API request:', error);
+    return new Response('There was an error Please Try Again.')
+  }
   return new Response(JSON.stringify(result));
+
 }

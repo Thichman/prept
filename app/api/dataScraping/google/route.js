@@ -29,6 +29,6 @@ export async function POST(request) {
         return new Response(returnItems);
     } catch (error) {
         console.error('Error running Apify actor:', error.message);
-        return new Response("Error running Apify actor", { status: 500 });
+        return new Response("Data Not Found");
     }
 }

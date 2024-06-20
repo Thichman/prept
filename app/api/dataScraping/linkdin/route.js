@@ -21,7 +21,7 @@ export async function POST(request) {
         const returnItems = JSON.stringify(response.data)
         return new Response(returnItems);
     } catch (error) {
-        console.error(error);
-        return new Response("Error")
+        console.error('Error running Apify actor:', error.message);
+        return new Response("Data Not Found");
     }
 }

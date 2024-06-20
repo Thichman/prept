@@ -31,6 +31,6 @@ export async function POST(req) {
         return NextResponse.json({ reply });
     } catch (error) {
         console.error('Error in OpenAI API request:', error);
-        return NextResponse.json({ error: 'Error generating response' }, { status: 500 });
+        return NextResponse.json({ error: 'Error generating response' });
     }
 }
