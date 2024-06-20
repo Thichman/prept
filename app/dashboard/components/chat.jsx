@@ -67,7 +67,7 @@ const ChatInterface = ({ context }) => {
     const displayedMessages = messages.slice(1);
 
     return (
-        <div className="flex flex-col h-screen p-4 w-10/12">
+        <div className="flex flex-col h-[700px] p-4 w-10/12">
             <div className="flex-1 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-md">
                 {displayedMessages.map((msg, index) => (
                     <div key={index} className={`my-2 p-2 rounded-lg ${msg.position === 'right' ? 'bg-blue-500 text-white self-end' : 'bg-gray-300 self-start text-black'}`}>

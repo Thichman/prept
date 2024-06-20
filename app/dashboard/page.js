@@ -239,7 +239,7 @@ export default function dashboard() {
                                     ))}
                                 </ul>
                                 <form onSubmit={handleSubmit}>
-                                    <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
+                                    <button type="submit" className="bg-blue-500 text-white mt-6 px-4 h-10 rounded-md hover:bg-blue-600 transition duration-300">Submit</button>
                                 </form>
                             </>
                         ) : (
@@ -272,7 +272,7 @@ export default function dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className={"absolute left-0 h-4/5 bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
+            <div className={"absolute left-0 h-full bg-gray-100 shadow-lg p-4 overflow-scroll"} style={sidebarStyle}>
                 {/* Content inside sidebar */}
                 <div style={contentStyle}>
                     <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to Your Dashboard</h1>
