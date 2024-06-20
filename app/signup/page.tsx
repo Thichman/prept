@@ -28,7 +28,7 @@ export default async function signup({
             email,
             password,
             options: {
-                emailRedirectTo: `${origin}`,
+                emailRedirectTo: window.location.origin,
             },
         });
 
