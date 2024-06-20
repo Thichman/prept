@@ -1,4 +1,4 @@
-// app/api/ai/chat/route.js
+export const maxDuration = 60;
 import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
 
@@ -19,7 +19,7 @@ export async function POST(req) {
                     content: msg.text,
                 })),
             ],
-            max_tokens: 350,
+            max_tokens: 300,
             temperature: 0.7,
             top_p: 1.0,
             frequency_penalty: 0.0,
