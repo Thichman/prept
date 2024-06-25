@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import UserMenu from '../components/UserMenu'
 import "./globals.css";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/react"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,6 +28,7 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
   return (
     <html lang="en" className={GeistSans.className}>
+      <Analytics />
       <body className="bg-black text-black">
         <header className="flex items-center justify-between h-20 w-full bg-white px-4">
           <div className="flex items-center">
