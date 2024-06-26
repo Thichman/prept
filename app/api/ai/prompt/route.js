@@ -18,62 +18,68 @@ export async function POST(request) {
   if (requestData.parentData) {
     const parentDataStr = JSON.stringify(requestData.parentData);
     const individualName = requestData.fullName
-    prompt = `Create a comprehensive document that consolidates all relevant information about an individual, primarily focusing on LinkedIn data with a slight reference to Instagram data. This document should be used to prepare for meetings or calls. The document should be structured for easy readability and quick reference.
+    prompt = `Create a comprehensive document that consolidates all relevant information about an individual, integrating data from LinkedIn, company websites, news articles, public records, and other sources. This document should be used to prepare for meetings or calls. The document should be structured for easy readability, quick reference, and provide actionable insights and conclusions.
+    Document Requirements:
+    Header:
+    Include a professional header with the individual’s full name.
+    If the name might be difficult to pronounce for English speakers, include a pronunciation guide.
+    LinkedIn Data (40%):
+    Personal Information:
+    Full Name
+    Current Job Title
+    Current Company
+    Company Information:
+    Company Name
+    Facts about the Business (e.g., industry, product lines, market position)
+    Employee Count
+    Headquarters Location
+    Recent Major News (e.g., acquisitions, significant hires, promotions)
+    Hiring Status (if available)
+    Recent Activity:
+    Summaries and direct quotes from recent LinkedIn posts
+    Topics they frequently post about or engage with
+    Job Role Information:
+    Detailed description of the individual’s role
+    Key responsibilities and typical activities
+    Relevant industry lingo or terminology
+    Potential Conversation Starters:
+    Common interests or shared topics based on their activity
+    Points of engagement from recent posts or shared articles
+    Additional Insights (30%):
+    Instagram Data (if available):
+    Verify the individual’s authenticity
+    Note any recent posts or activity if relevant
+    Company Website and Public Records:
+    Detailed company information and context
+    Recent relevant news, financial data, and market position
+    Articles and News Data:
+    Interesting pieces of information about the individual from recent articles
+    Notable awards, achievements, and other relevant context
+    Professional Analysis and Conclusions (30%):
+    Emotional and Psychological Insights:
+    Analysis of the individual's online presence to provide psychological insights
+    Information on potential objections they might have and strategies to address them
+    Strategic Recommendations:
+    Suggestions on how to engage with the individual effectively
+    Steps to close based on their interactions with the company
+    Conclusions and Insights:
+    Draw meaningful conclusions from the gathered data
+    Provide new insights that are not immediately obvious from the raw data
+    Highlight potential opportunities and challenges in engaging with the individual
 
-        Document Requirements:
-
-        1. Header: Include a professional header with the individual’s full name. And if you think the name would be hard to pronounce as an english speaker then right under
-          the header include a section that tells the user the correct pronunciation. 
-        2. LinkedIn Data (70%):
-          • Personal Information:
-            - Full Name
-            - Current Job Title
-            - Current Company
-          • Company Information:
-            - Company Name
-            - Facts about the Business (e.g., industry, product lines, market position)
-            - Employee Count
-            - Headquarters Location
-            - Recent Major News (e.g., acquisitions, significant hires, promotions)
-            - Hiring Status (if available)
-          • Recent Activity:
-            - Recent LinkedIn Posts (summaries and direct quotes where relevant)
-            - Topics they frequently post about or engage with
-          • Job Role Information:
-            - Detailed description of the individual’s role
-            - Key responsibilities and typical activities
-            - Relevant industry lingo or terminology
-          • Potential Conversation Starters:
-            - Common interests or shared topics based on their activity
-            - Points of engagement from recent posts or shared articles
-            • If this datapoint is not provided disregard this datapoint and allocate percentage evenly to the other datapoints.
-        3. Instagram Data (10%):
-          • Verify the individual’s authenticity
-          • Note any recent posts or activity if relevant
-          • If this datapoint is not provided disregard this datapoint and allocate percentage evenly to the other datapoints.
-        4. Company Page Data (10%):
-          • Include information on the individuals company and what they do.
-          • Note any recent relevent information including industry and business context.
-          • If this datapoint is not provided disregard this datapoint and allocate percentage evenly to the other datapoints.
-        5. Article Data (10%):
-          • Provide any pieces of interesting information that the articles provide about the user if they are provided.
-          • Note any notable awards or information that would provide good context about the individual,
-          • If this datapoint is not provided disregard this datapoint and allocate percentage evenly to the other datapoints.
-        6. No Picture Links: Ensure that no picture links are included in the document.
-          
-        Goal: This document should all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. This should be a long
-        document that encompases everything important, do not cut corners
-        
-        Here is the individual’s information: Individual’s full name: ${individualName} Scraped Data: ${parentDataStr}
-
-        Formatting (Extremely important!):
-          • Organized into clear, distinct sections for quick reference.
-          • Use paragraphs and bullet points where appropriate for clarity.
-          • Do not include any links to anything.
-          • Your response should NEVER include any weird characters including '*', '#', '%', multiple '-'s.
-          • FORMATTING IS VERY IMPORTANT DO NOT FORGET ANY OF THIS WHEN RETURNING YOUR RESPONSE.
-          • Do not include percentages beside the section title on the response.
-        `;
+    FORMATTING (Extremely Important!):
+      - Organized into clear, distinct sections for quick reference.
+      - Use paragraphs and bullet points where appropriate for clarity.
+      - Ensure no repeating information or unnecessary details.
+      - Ensure no special characters including '*', '#', '%', or multiple '-'s.
+      - Do not include any links to anything.
+      - Ensure no picture links are included.
+      - FORMATTING IS VERY IMPORTANT DO NOT FORGET ANY OF THIS WHEN RETURNING YOUR RESPONSE.
+      
+    Goal: This document should provide all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. It should offer new insights and conclusions based on the data, not just regurgitate information. This should be a long document that encompasses everything important, do not cut corners.
+    Here is the individual’s information:
+    Individual’s full name: ${individualName}
+    Scraped Data: ${parentDataStr}`;
 
 
   }

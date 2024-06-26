@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link";
 import { useState } from "react";
 import { signUp } from "./signUpAction";
 
@@ -57,7 +56,7 @@ export default function Signup({ searchParams }: { searchParams: { message: stri
                     />
                     <button
                         type="button"
-                        className="absolute inset-y-0 right-0 px-4 py-2"
+                        className="absolute inset-y-0 right-0 px-4 py-2 bg-white"
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         {showPassword ? "Hide" : "Show"}
