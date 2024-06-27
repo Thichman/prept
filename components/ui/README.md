@@ -1,0 +1,1 @@
+This folder holds all of the shad cn components we will be using.

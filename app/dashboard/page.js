@@ -289,7 +289,10 @@ export default function dashboard() {
                         <li>Review and submit the form to generate a comprehensive document.</li>
                     </ul>
                     <p className="text-lg text-gray-600 mb-4">
-                        Note: The more data points you submit, the longer it will take to generate the document.
+                        Note: The more data points you submit, the longer it will take to generate the document. Also, Sometimes the navigational arrows do not show. If this is the case for you then press the left and right sides of the card to navigate.
+                    </p>
+                    <p className="text-lg text-gray-600 mb-4">
+                        Once submitted, you'll receive a detailed document with all gathered information. You can then interact further using our chatbot to ask questions, draft custom emails, and more.
                     </p>
                     <p className="text-lg text-gray-600 mb-4">
                         Once submitted, you'll receive a detailed document with all gathered information. You can then interact further using our chatbot to ask questions, draft custom emails, and more.

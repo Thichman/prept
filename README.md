@@ -48,6 +48,7 @@ The application is structured into frontend and backend components, utilizing mo
 - **Supabase**: A backend-as-a-service providing authentication, database, and storage functionalities.
 - **Axios**: A promise-based HTTP client for making API requests.
 - **RapidAPI**: Used for integrating third-party APIs like the LinkedIn data scraper.
+- **Apify**: Used for integrating third-party APIs like the website data scraper.
 
 #### Key Functions
 
