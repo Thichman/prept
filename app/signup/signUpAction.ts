@@ -3,7 +3,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { createTestUser } from "../dashboard/test-functions/createTestUser";
 
 export const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
@@ -22,8 +21,6 @@ export const signUp = async (formData: FormData) => {
         console.log(error);
         return redirect("/signup?message=Could not authenticate user");
     }
-
-    createTestUser(email);
 
     return redirect("/signup?message=Success, Check email to finish signing up!");
 };

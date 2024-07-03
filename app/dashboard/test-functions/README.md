@@ -1,1 +1,0 @@
-Everything in this file is for the test launch only and should be deleted when paid version is released.

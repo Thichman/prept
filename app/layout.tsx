@@ -28,7 +28,7 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-black text-black">
+      <body className="bg-gray-100 text-black">
         <Analytics />
         <header className="flex items-center justify-between h-20 w-full bg-white px-4">
           <div className="flex items-center">
