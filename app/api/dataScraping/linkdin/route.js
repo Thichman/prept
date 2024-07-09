@@ -12,7 +12,7 @@ export async function POST(request) {
             'X-RapidAPI-Host': 'linkedin-data-scraper.p.rapidapi.com'
         },
         data: {
-            link: requestData
+            link: requestData.url
         }
     };
 
@@ -21,7 +21,7 @@ export async function POST(request) {
         const returnItems = JSON.stringify(response.data)
         return new Response(returnItems);
     } catch (error) {
-        console.error('Error running Apify actor:', error.message);
+        console.error('Error running rapidapi actor:', error.message);
         return new Response("Data Not Found");
     }
 }

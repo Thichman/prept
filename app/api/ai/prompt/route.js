@@ -17,7 +17,6 @@ export async function POST(request) {
   let prompt = ''
   if (requestData.parentData) {
     const parentDataStr = JSON.stringify(requestData.parentData);
-    const individualName = requestData.fullName
     prompt = `Create a comprehensive document that consolidates all relevant information about an individual, primarily focusing on LinkedIn data with additional insights from other sources such as company websites, news articles, and public records. This document should be used to prepare for meetings or calls. The document should be structured for easy readability and quick reference, and it should draw meaningful conclusions from the data to provide new and actionable insights.
 
 Document Requirements:
@@ -88,7 +87,6 @@ Document Requirements:
 Goal: This document should provide all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. It should offer new insights and conclusions based on the data, not just regurgitate information. This should be a long document that encompasses everything important, do not cut corners.
 
 Here is the individual’s information:
-- Individual’s full name: ${individualName}
 - Scraped Data: ${parentDataStr}
 `;
 

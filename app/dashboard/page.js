@@ -6,49 +6,40 @@ import ChatInterface from "./components/chat";
 import InformationFinder from "./components/information-finder/InformationFinder"
 
 export default function dashboard() {
-    const [formData, setFormData] = useState({
-        facebook: '',
-        instagram: '',
-        linkedin: '',
-        fullName: '',
-        companyPage: '',
-        articleLinks: [''],
-    });
     const [summary, setSummary] = useState('');
     const [loading, setLoading] = useState(false);
     const [showAI, setShowAI] = useState(false);
     const [scrapedData, setScrapedData] = useState();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        if (name.startsWith('articleLinks-')) {
-            const index = parseInt(name.split('-')[1], 10);
-            const updatedArticleLinks = [...formData.articleLinks];
-            updatedArticleLinks[index] = value;
-            setFormData({ ...formData, articleLinks: updatedArticleLinks });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value
-            });
+    const handleAcceptedResult = async (url) => {
+        const dataToScrape = {
+            linkedin: url.includes('linkedin.com') ? url : null,
+            instagram: url.includes('instagram.com') ? url : null,
+            otherUrls: !url.includes('linkedin.com') && !url.includes('instagram.com') ? [url] : [],
+        };
+
+        try {
+            const scrapedResult = await mainScraper(dataToScrape);
+            const parsedResult = JSON.parse(scrapedResult);
+
+            console.log(scrapedResult)
+            setScrapedData(prevData => ({
+                ...prevData,
+                ...parsedResult,
+            }));
+        } catch (error) {
+            console.error('Error scraping data:', error);
         }
     };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         setShowAI(false)
         setLoading(true);
-        // Construct summary text
-        const dataSending = { facebook: formData.facebook, instagram: formData.instagram, linkedin: formData.linkedin, companyPage: formData.companyPage, articleLinks: formData.articleLinks }
-        const returnPrompt = await mainScraper(dataSending)
-        setScrapedData(returnPrompt)
-        await callModel(returnPrompt)
+        await callModel(scrapedData)
     };
 
     const callModel = async (readyPrompt) => {
         const requestBody = {
             parentData: readyPrompt,
-            fullName: formData.fullName,
         };
         const response = await fetch('../api/ai/prompt', {
             method: 'POST',
@@ -62,12 +53,6 @@ export default function dashboard() {
         const returnPDF = await response.json();
         setSummary(returnPDF.kwargs.content);
         setLoading(false);
-    };
-
-    const addArticleLink = () => {
-        if (formData.articleLinks.length < 3) {
-            setFormData({ ...formData, articleLinks: [...formData.articleLinks, ''] });
-        }
     };
 
     const handleDownloadPDF = () => {
@@ -111,9 +96,9 @@ export default function dashboard() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className="max-w-[650px] mx-auto py-8">
+            <div className="max-w-[900px] mx-auto py-8">
                 <div className="relative w-full">
-                    <InformationFinder />
+                    <InformationFinder onAcceptResult={handleAcceptedResult} submit={handleSubmit} />
                 </div>
             </div>
 
@@ -149,7 +134,7 @@ export default function dashboard() {
                 ) : null}
             </div>
             <div className="flex items-center justify-center w-full">
-                {showAI && <ChatInterface context={scrapedData} />}
+                {showAI && <ChatInterface context={JSON.stringify(scrapedData)} />}
             </div>
         </div >
     );
