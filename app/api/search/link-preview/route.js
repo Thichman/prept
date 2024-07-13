@@ -1,15 +1,22 @@
-import { getLinkPreview } from 'link-preview-js';
+import mql from '@microlink/mql';
 
 export async function POST(req) {
     const data = await req.json();
     const { url } = data;
 
-    console.log(url)
+    console.log('Requested URL:', url);
+
     try {
-        const linkPreview = await getLinkPreview(url);
-        const { title, description, images } = linkPreview;
-        console.log('Link preview:', title);
-        return new Response(JSON.stringify({ title, description, images }), {
+        const { status, data: linkPreview } = await mql(url);
+
+        // Log the response for debugging
+        console.log('Link preview:', linkPreview);
+
+        // Destructure the necessary fields from the linkPreview object
+        const { title, description, image } = linkPreview;
+
+        // Return the necessary fields in the response
+        return new Response(JSON.stringify({ title, description, image }), {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {

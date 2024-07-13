@@ -2,10 +2,16 @@ import axios from 'axios';
 
 export async function POST(req) {
     const data = await req.json()
+    let queryParts = [];
 
-    const { name, company, location, role } = data;
-    const query = `${name} ${company} ${location} ${role}`;
+    if (data.name) queryParts.push(data.name);
+    if (data.company) queryParts.push(data.company);
+    if (data.location) queryParts.push(data.location);
+    if (data.role) queryParts.push(data.role);
 
+    const query = queryParts.join(' ');
+
+    console.log(query);
     try {
         const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
             params: {

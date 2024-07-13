@@ -10,8 +10,10 @@ export default function dashboard() {
     const [loading, setLoading] = useState(false);
     const [showAI, setShowAI] = useState(false);
     const [scrapedData, setScrapedData] = useState();
+    const [timeout, setTimeout] = useState(false);
 
     const handleAcceptedResult = async (url) => {
+        setTimeout(true);
         const dataToScrape = {
             linkedin: url.includes('linkedin.com') ? url : null,
             instagram: url.includes('instagram.com') ? url : null,
@@ -30,6 +32,7 @@ export default function dashboard() {
         } catch (error) {
             console.error('Error scraping data:', error);
         }
+        setTimeout(false)
     };
     const handleSubmit = async () => {
         setShowAI(false)
@@ -62,7 +65,7 @@ export default function dashboard() {
         const maxLineWidth = doc.internal.pageSize.width - 2 * margin;
         let y = margin;
 
-        const logoText = 'Prept.AI';
+        const logoText = 'Bréfd';
         doc.setFontSize(20);
         doc.setTextColor('#228B22'); // Main green color
         doc.text(logoText, margin, y);
@@ -87,7 +90,7 @@ export default function dashboard() {
         };
 
         addText(summary, margin, y);
-        doc.save(`${formData.fullName} summary.pdf`);
+        doc.save(`Bréfd summary.pdf`);
     };
 
     const handleShowAI = () => {
@@ -98,7 +101,7 @@ export default function dashboard() {
         <div className="flex flex-col items-center justify-center min-h-screen">
             <div className="max-w-[900px] mx-auto py-8">
                 <div className="relative w-full">
-                    <InformationFinder onAcceptResult={handleAcceptedResult} submit={handleSubmit} />
+                    <InformationFinder onAcceptResult={handleAcceptedResult} submit={handleSubmit} timeout={timeout} />
                 </div>
             </div>
 

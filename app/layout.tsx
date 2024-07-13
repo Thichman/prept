@@ -34,7 +34,7 @@ export default async function RootLayout({
           <div className="flex items-center">
             <Link href={"/"}>
               <div className='text-4xl text-prept-color-main-green'>
-                Prept.AI
+                Bréfd
               </div>
             </Link>
           </div>
@@ -67,12 +67,6 @@ export default async function RootLayout({
                 <a href="/pages/terms-of-service" className="text-gray-400 hover:text-white">Terms of Service</a>
               </div>
               <div className="flex space-x-4">
-                {/* <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                  <span className="sr-only">Facebook</span>
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.406.593 24 1.325 24H12.81V14.708h-3.48v-3.618h3.48V8.291c0-3.451 2.103-5.329 5.171-5.329 1.471 0 2.736.109 3.102.159v3.598l-2.127.001c-1.664 0-1.988.79-1.988 1.948v2.555h3.975l-.519 3.618h-3.457V24h6.78c.732 0 1.325-.593 1.325-1.324V1.325C24 .593 23.407 0 22.675 0z" />
-                  </svg>
-                </a> */}
                 <a href="https://x.com/ArcTech_Offical" target="_blank" rel="noopener noreferrer" className="hover:text-white">
                   <span className="sr-only">Twitter</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
