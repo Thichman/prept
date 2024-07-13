@@ -10,7 +10,7 @@ export async function POST(request) {
     const input = {
         "startUrls": [
             {
-                "url": requestData
+                "url": requestData.url
             }
         ],
         "useSitemaps": false,

@@ -1,4 +1,4 @@
-# Prept.AI
+# Bréfd
 
 Welcome to **Prept.AI**, an application designed to help users research individuals and gather data to prepare for interactions. This document provides an overview of the application's features and structure.
 
@@ -49,6 +49,7 @@ The application is structured into frontend and backend components, utilizing mo
 - **Axios**: A promise-based HTTP client for making API requests.
 - **RapidAPI**: Used for integrating third-party APIs like the LinkedIn data scraper.
 - **Apify**: Used for integrating third-party APIs like the website data scraper.
+- **MicroLink**: Main component to get website previews.
 
 #### Key Functions
 

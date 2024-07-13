@@ -1,117 +1,71 @@
 export async function mainScraper(data) {
     let returnDataObject = {}; // Initialize an empty object to store the returned data
 
+    console.log(data)
+    const fetchData = async (url, type) => {
+        let endpoint;
+        switch (type) {
+            case 'linkedin':
+                endpoint = '../../api/dataScraping/linkdin';
+                break;
+            case 'instagram':
+                endpoint = '../../api/dataScraping/instagram';
+                break;
+            default:
+                endpoint = '../../api/dataScraping/website';
+                break;
+        }
+
+        try {
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url }),
+            });
+
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(`Failed to fetch data: ${response.statusText}, ${text}`);
+            }
+
+            const responseData = await response.json();
+            return responseData;
+        } catch (error) {
+            console.error(`Error fetching ${type} data:`, error.message);
+            return null;
+        }
+    };
+
+    // Process LinkedIn data
     if (data.linkedin) {
-        try {
-            const linkdinData = await fetch('../../api/dataScraping/linkdin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.linkedin),
-            });
-
-            if (!linkdinData.ok) {
-                throw new Error(`Failed to fetch data: ${linkdinData.statusText}`);
-            }
-
-            const linkdinReturnData = await linkdinData.json();
-            returnDataObject['linkedin'] = linkdinReturnData.data;
-        } catch (error) {
-            console.error('Error fetching LinkedIn data:', error.message);
+        const linkedinReturnData = await fetchData(data.linkedin, 'linkedin');
+        if (linkedinReturnData) {
+            returnDataObject['linkedin'] = linkedinReturnData.data;
         }
     }
 
-    if (data.facebook) {
-        try {
-            const facebookData = await fetch('../../api/dataScraping/facebook', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.facebook),
-            });
-
-            if (!facebookData.ok) {
-                throw new Error(`Failed to fetch data: ${facebookData.statusText}`);
-            }
-
-            const facebookReturnData = await facebookData.json();
-            if (!facebookReturnData.error) {
-                returnDataObject['facebook'] = facebookReturnData; // Add Facebook data to the object
-            }
-        } catch (error) {
-            console.error('Error fetching Facebook data:', error.message);
-        }
-    }
-
+    // Process Instagram data
     if (data.instagram) {
-        try {
-            const instagramData = await fetch('../../api/dataScraping/instagram', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.instagram),
-            });
-
-            if (!instagramData.ok) {
-                throw new Error(`Failed to fetch data: ${instagramData.statusText}`);
-            }
-
-            const instagramReturnData = await instagramData.json();
-            returnDataObject['instagram'] = instagramReturnData; // Add Instagram data to the object
-        } catch (error) {
-            console.error('Error fetching Instagram data:', error.message);
+        const instagramReturnData = await fetchData(data.instagram, 'instagram');
+        if (instagramReturnData) {
+            returnDataObject['instagram'] = instagramReturnData;
         }
     }
 
-    if (data.companyPage) {
-        try {
-            const companyData = await fetch('../../api/dataScraping/website', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data.companyPage),
-            });
-
-            if (!companyData.ok) {
-                throw new Error(`Failed to fetch data: ${companyData.statusText}`);
-            }
-
-            const companyReturnData = await companyData.json();
-            returnDataObject['companyData'] = companyReturnData; // Add company data to the object
-        } catch (error) {
-            console.error('Error fetching company data:', error.message);
-        }
-    }
-
-    if (data.articleLinks && data.articleLinks.length > 0) {
-        returnDataObject['articles'] = [];
-        for (const link of data.articleLinks) {
-            if (link) { // Check if the link is not empty
-                try {
-                    const articleData = await fetch('../../api/dataScraping/website', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(link),
-                    });
-
-                    if (!articleData.ok) {
-                        throw new Error(`Failed to fetch data: ${articleData.statusText}`);
-                    }
-
-                    const articleReturnData = await articleData.json();
-                    returnDataObject['articles'].push(articleReturnData);
-                } catch (error) {
-                    console.error('Error fetching article data:', error.message);
+    // Process Other URLs (everything else)
+    if (data.otherUrls && data.otherUrls.length > 0) {
+        returnDataObject['otherData'] = [];
+        for (const url of data.otherUrls) {
+            if (url) { // Check if the url is not empty
+                const otherReturnData = await fetchData(url, 'website');
+                if (otherReturnData) {
+                    returnDataObject['otherData'].push(otherReturnData);
                 }
             }
         }
     }
 
-    return JSON.stringify(returnDataObject); // Return the object containing all the platform data
+    return JSON.stringify(returnDataObject);
 }

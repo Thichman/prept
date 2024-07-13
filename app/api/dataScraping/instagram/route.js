@@ -8,7 +8,7 @@ export async function POST(request) {
 
     const input = {
         "usernames": [
-            requestData
+            requestData.url
         ]
     };
 
