@@ -30,10 +30,10 @@ export default async function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-gray-100 text-black">
         <Analytics />
-        <header className="flex items-center justify-between h-20 w-full bg-white px-4">
+        <header className="flex items-center justify-between h-20 w-full bg-slate-200 px-4">
           <div className="flex items-center">
             <Link href={"/"}>
-              <div className='text-4xl text-prept-color-main-green'>
+              <div className='text-4xl text-brefd-primary-purple'>
                 Bréfd
               </div>
             </Link>
@@ -44,7 +44,7 @@ export default async function RootLayout({
             {!user &&
               <Link
                 href="/signup"
-                className="py-2 px-3 flex rounded-md no-underline bg-prept-color-main-green hover:bg-prept-color-background-lighter-green"
+                className="py-2 px-3 flex rounded-md no-underline bg-brefd-primary-purple hover:bg-brefd-primary-indigo"
               >
                 Sign Up
               </Link>

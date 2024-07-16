@@ -14,16 +14,22 @@ module.exports = {
           "background-hover": "hsl(var(--btn-background-hover))",
         },
 
-        'prept-color': {
-          'main-green': '#6DD47E',
-          'background-lighter-green': '#ADFFBA',
-          'header-gray-black': '#1B1B1B',
-          'gray-white': '#EDEDED',
+        'brefd-primary': {
+          'indigo': '#5E17EB',
+          'yellow': '#FAD02C',
+          'purple': '#7447E1',
+          'black': '#100F0F'
+        },
+        'brefd-secondary': {
+          'gradient-start': '#FF914D',
+          'gradient-end': '#FAD02CB',
+          'gray-lights': '#C0C0C0',
+          'gray-dark': '#9A9696',
         },
       },
     },
-  },
-  plugins: [
+    plugins: [
 
-  ]
+    ],
+  },
 };

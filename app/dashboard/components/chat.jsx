@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-//testing import can be deleted after test phase
+// testing import can be deleted after test phase
 import { sendAiMessage } from './send-ai-chat-database';
 
 const ChatInterface = ({ context }) => {
@@ -26,7 +26,7 @@ const ChatInterface = ({ context }) => {
     const handleSend = async () => {
         if (!input.trim()) return;
 
-        //delete this function after test phase
+        // delete this function after test phase
         sendAiMessage(input);
 
         setAwaitReturn(true);
@@ -67,7 +67,7 @@ const ChatInterface = ({ context }) => {
     const displayedMessages = messages.slice(1);
 
     return (
-        <div className="flex flex-col h-[700px] p-4 w-10/12">
+        <div className="flex flex-col h-full p-4 w-full">
             <div className="flex-1 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-md">
                 {displayedMessages.map((msg, index) => (
                     <div key={index} className={`my-2 p-2 rounded-lg ${msg.position === 'right' ? 'bg-blue-500 text-white self-end' : 'bg-gray-300 self-start text-black'}`}>
