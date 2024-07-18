@@ -12,7 +12,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Prept AI",
+  title: "Bréfd AI",
   description: "The application that allows users to search research individuals and get data to prepare you for interaction.",
 };
 
@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-gray-100 text-black">
         <Analytics />
-        <header className="flex items-center justify-between h-20 w-full bg-slate-200 px-4">
+        <header className="flex items-center justify-between h-20 w-full bg-gray-100 px-4">
           <div className="flex items-center">
             <Link href={"/"}>
               <div className='text-4xl text-brefd-primary-purple'>
@@ -51,14 +51,14 @@ export default async function RootLayout({
             }
           </div>
         </header>
-        <main className="min-h-screen flex flex-col items-center pt-4 pb-6">
+        <main className="min-h-screen flex flex-col items-center pt-4 pb-6 bg-gradient-to-r from-brefd-primary-yellow to-brefd-secondary-gradient-start">
           {children}
         </main>
         <footer className="w-full border-t border-gray-300 text-white py-8 px-4 bg-black">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row md:justify-between items-center">
               <div className="text-sm mb-4 md:mb-0">
-                &copy; {new Date().getFullYear()} Prept AI. All rights reserved.
+                &copy; {new Date().getFullYear()} Bréfd AI. All rights reserved.
               </div>
               <div className="flex space-x-4 mb-4 md:mb-0">
                 <a href="https://www.arctechautomations.com/about" className="text-gray-400 hover:text-white">About Us</a>

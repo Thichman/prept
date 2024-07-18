@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -16,6 +16,8 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     const [showCustomLinkInput, setShowCustomLinkInput] = useState(false);
     const [activeTab, setActiveTab] = useState('nameOnly');
     const [showResults, setShowResults] = useState(false);
+    const [showSidebar, setShowSidebar] = useState(false);
+    const iframeRef = useRef(null);
 
     const handleSearch = async () => {
         try {
@@ -62,6 +64,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     useEffect(() => {
         if (selectedUrl) {
             customFetcher(selectedUrl).catch(() => { });
+            setShowSidebar(true);
         }
     }, [selectedUrl]);
 
@@ -78,68 +81,84 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         }
     };
 
+    const handleOutsideClick = (e) => {
+        if (iframeRef.current && !iframeRef.current.contains(e.target)) {
+            setShowSidebar(false);
+            setSelectedUrl('');
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, []);
+
     return (
         <>
-            <div className="information-finder p-6 bg-white rounded-lg shadow-lg">
+            <div className="information-finder rounded-lg shadow-xl">
                 {/* Search Form */}
-                <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Search Information</h2>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Name"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <input
-                            type="text"
-                            value={company}
-                            onChange={(e) => setCompany(e.target.value)}
-                            placeholder="Company"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <input
-                            type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            placeholder="Location (optional)"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <input
-                            type="text"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            placeholder="Role"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <button
-                            onClick={handleSearch}
-                            className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Search
-                        </button>
-                        {submittedLinks.size > 0 && (
+                {!showResults && (
+                    <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
+                        <h2 className="text-xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Name"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                            <input
+                                type="text"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                                placeholder="Company"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                            <input
+                                type="text"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                placeholder="Location (optional)"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <input
+                                type="text"
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
+                                placeholder="Role"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
                             <button
-                                onClick={submitForm}
-                                disabled={timeout}
-                                className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                onClick={handleSearch}
+                                className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                Submit Results
+                                Search
                             </button>
-                        )}
+                            {submittedLinks.size > 0 && (
+                                <button
+                                    onClick={submitForm}
+                                    disabled={timeout}
+                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                >
+                                    Submit Results
+                                </button>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
             {/* Main Content */}
             {showResults &&
                 <div className="flex pt-4 w-full">
                     {/* Search Results */}
                     <div className="results bg-white p-6 rounded-lg shadow-md mb-6 flex-1">
-                        <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+                        <h2 className="text-xl text-black font-semibold mb-4">Custom Search Results</h2>
                         <div className="tabs mb-4">
                             <button
                                 onClick={() => setActiveTab('nameOnly')}
@@ -225,41 +244,41 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                         )}
                     </div>
 
-                    {/* Link Preview */}
-                    <div className="flex-1">
-                        {selectedUrl && (
-                            <div className="preview-container bg-white p-6 rounded-lg shadow-md mb-6 overflow-y-auto">
-                                {fetchingPreview ? (
-                                    <p className="text-gray-600 mb-6">Loading preview...</p>
-                                ) : linkPreview ? (
-                                    <div>
-                                        <h3 className="text-lg font-semibold">{linkPreview.title}</h3>
-                                        <p className="text-gray-600">{linkPreview.description}</p>
-                                        {linkPreview.image && linkPreview.image.url && (
-                                            <img
-                                                src={linkPreview.image.url}
-                                                alt={linkPreview.title}
-                                                className="w-full h-auto mb-4"
-                                            />
-                                        )}
-                                        <a
-                                            href={linkPreview.url}
-                                            className="text-blue-500 hover:underline"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {linkPreview.url}
-                                        </a>
-                                    </div>
-                                ) : (
-                                    <div>Failed to load preview</div>
+                    <div className="sidebar transition-all duration-300 ease-in-out bg-white shadow-md fixed inset-y-0 left-0 w-1/3 z-50 p-4" ref={iframeRef} style={showSidebar ? { transform: 'translateX(0%)' } : { transform: 'translateX(-100%)' }}>
+                        <button
+                            onClick={() => setShowSidebar(false)}
+                            className="text-black font-semibold mb-2"
+                        >
+                            x
+                        </button>
+                        {fetchingPreview ? (
+                            <p className="text-gray-600 mb-6">Loading preview...</p>
+                        ) : linkPreview ? (
+                            <div>
+                                <h3 className="text-lg text-black font-semibold">{linkPreview.title}</h3>
+                                <p className="text-gray-600">{linkPreview.description}</p>
+                                {linkPreview.image && linkPreview.image.url && (
+                                    <img
+                                        src={linkPreview.image.url}
+                                        alt={linkPreview.title}
+                                        className="w-full h-auto mb-4 text-black"
+                                    />
                                 )}
+                                <a
+                                    href={linkPreview.url}
+                                    className="text-blue-500 hover:underline"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {linkPreview.url}
+                                </a>
+                                <div className='text-brefd-primary-purple'>
+                                    <Link href={selectedUrl} target="_blank" rel="noopener noreferrer">Go to the site</Link>
+                                </div>
                             </div>
+                        ) : (
+                            <div>Failed to load preview</div>
                         )}
-                        <div>
-                            <Link href={selectedUrl}>Go to the site</Link>
-                        </div>
-
                     </div>
                 </div >
             }
