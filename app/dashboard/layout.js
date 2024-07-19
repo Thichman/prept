@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export const metadata = {
-    title: "Prept AI",
+    title: "Bréfd AI",
     description: "The application that allows users to search research individuals and get data to prepare you for interaction.",
 };
 

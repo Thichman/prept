@@ -94,16 +94,27 @@ export default function dashboard() {
     };
 
     const handleShowAI = () => {
-        setShowAI(true);
+        setShowAI(!showAI);
+    };
+
+    const handleReset = () => {
+        setSummary('');
+        setScrapedData();
+        setLoading(false);
+        setShowAI(false);
+        setTimeout(false)
     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className="max-w-[900px] mx-auto py-8">
-                <div className="relative w-full">
-                    <InformationFinder onAcceptResult={handleAcceptedResult} submit={handleSubmit} timeout={timeout} />
+            {!loading && !summary && (
+
+                <div className="max-w-[900px] mx-auto py-8">
+                    <div className="relative w-full">
+                        <InformationFinder onAcceptResult={handleAcceptedResult} submit={handleSubmit} timeout={timeout} />
+                    </div>
                 </div>
-            </div>
+            )}
 
             <div className="w-full max-w-[800px] min-w-[700px] p-4 rounded-lg mt-8">
                 {loading ? (
@@ -132,13 +143,35 @@ export default function dashboard() {
                         <div className="flex items-center justify-center space-x-4">
                             <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
                             <button onClick={handleShowAI} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Chat with AI</button>
+                            <button onClick={handleReset} className="bg-red-500 text-back py-2 px-4 rounded-md hover:bg-red-600 transition duration-300">Bréf Someone New</button>
                         </div>
                     </div>
                 ) : null}
             </div>
-            <div className="flex items-center justify-center w-full">
+            <div className={`fixed right-0 top-0 h-full bg-white shadow-lg transition-transform transform ${showAI ? 'translate-x-0' : 'translate-x-full'}`} style={{ width: '400px' }}>
                 {showAI && <ChatInterface context={JSON.stringify(scrapedData)} />}
             </div>
+            {summary &&
+                <button
+                    onClick={handleShowAI}
+                    className="fixed bottom-4 left-4 bg-blue-500 text-white p-2 rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-6 h-6"
+                    >
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            }
         </div >
     );
 };

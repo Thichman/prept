@@ -11,7 +11,6 @@ export async function POST(req) {
 
     const query = queryParts.join(' ');
 
-    console.log(query);
     try {
         const response = await axios.get('https://www.googleapis.com/customsearch/v1', {
             params: {

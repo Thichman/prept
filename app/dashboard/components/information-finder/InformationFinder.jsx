@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
@@ -16,6 +16,9 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     const [showCustomLinkInput, setShowCustomLinkInput] = useState(false);
     const [activeTab, setActiveTab] = useState('nameOnly');
     const [showResults, setShowResults] = useState(false);
+    const [showSidebar, setShowSidebar] = useState(false);
+    const [customLinks, setCustomLinks] = useState([]);
+    const iframeRef = useRef(null);
 
     const handleSearch = async () => {
         try {
@@ -62,6 +65,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     useEffect(() => {
         if (selectedUrl) {
             customFetcher(selectedUrl).catch(() => { });
+            setShowSidebar(true);
         }
     }, [selectedUrl]);
 
@@ -78,68 +82,77 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         }
     };
 
+    const handleOutsideClick = (e) => {
+        if (iframeRef.current && !iframeRef.current.contains(e.target)) {
+            setShowSidebar(false);
+            setSelectedUrl('');
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleOutsideClick);
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, []);
+
+    const handleAcceptCustomLink = (link) => {
+        const customResult = { link, title: link }; // Custom object for the custom link
+        acceptResult(customResult);
+    };
+
     return (
         <>
-            <div className="information-finder p-6 bg-white rounded-lg shadow-lg">
-                {/* Search Form */}
-                <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
-                    <h2 className="text-xl font-semibold mb-4">Search Information</h2>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Name"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <input
-                            type="text"
-                            value={company}
-                            onChange={(e) => setCompany(e.target.value)}
-                            placeholder="Company"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <input
-                            type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            placeholder="Location (optional)"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <input
-                            type="text"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            placeholder="Role"
-                            className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                        <button
-                            onClick={handleSearch}
-                            className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Search
-                        </button>
-                        {submittedLinks.size > 0 && (
+            <div className="information-finder rounded-lg shadow-xl">
+                {!showResults && (
+                    <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
+                        <h2 className="text-xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder="Name"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                            <input
+                                type="text"
+                                value={company}
+                                onChange={(e) => setCompany(e.target.value)}
+                                placeholder="Company"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
+                            <input
+                                type="text"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                placeholder="Location (optional)"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <input
+                                type="text"
+                                value={role}
+                                onChange={(e) => setRole(e.target.value)}
+                                placeholder="Role"
+                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required
+                            />
                             <button
-                                onClick={submitForm}
-                                disabled={timeout}
-                                className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                onClick={handleSearch}
+                                className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
-                                Submit Results
+                                Search
                             </button>
-                        )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
-            {/* Main Content */}
             {showResults &&
                 <div className="flex pt-4 w-full">
-                    {/* Search Results */}
                     <div className="results bg-white p-6 rounded-lg shadow-md mb-6 flex-1">
-                        <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+                        <h2 className="text-xl text-black font-semibold mb-4">Custom Search Results</h2>
                         <div className="tabs mb-4">
                             <button
                                 onClick={() => setActiveTab('nameOnly')}
@@ -159,6 +172,15 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                             >
                                 All Criteria
                             </button>
+                            {submittedLinks.size > 0 && (
+                                <button
+                                    onClick={submitForm}
+                                    disabled={timeout}
+                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                >
+                                    Submit Results
+                                </button>
+                            )}
                         </div>
                         {getActiveTabResults().length > 0 &&
                             getActiveTabResults().map((result, index) => (
@@ -168,8 +190,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                 >
                                     <div className="flex items-center">
                                         <span
-                                            className={`w-3 h-3 pr-3 rounded-full ${submittedLinks.has(result.link) ? 'bg-green-500' : 'bg-red-500'
-                                                } mr-2`}
+                                            className={`w-3 h-3 rounded-full ${submittedLinks.has(result.link) ? 'bg-green-500' : 'bg-red-500'}`}
                                         ></span>
                                         <a
                                             href="#"
@@ -211,57 +232,90 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                     placeholder="Enter your link here"
                                     className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                <button
-                                    onClick={async () => {
-                                        if (customLink) {
-                                            setSelectedUrl(customLink);
-                                        }
-                                    }}
-                                    className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    Preview Link
-                                </button>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Link Preview */}
-                    <div className="flex-1">
-                        {selectedUrl && (
-                            <div className="preview-container bg-white p-6 rounded-lg shadow-md mb-6 overflow-y-auto">
-                                {fetchingPreview ? (
-                                    <p className="text-gray-600 mb-6">Loading preview...</p>
-                                ) : linkPreview ? (
-                                    <div>
-                                        <h3 className="text-lg font-semibold">{linkPreview.title}</h3>
-                                        <p className="text-gray-600">{linkPreview.description}</p>
-                                        {linkPreview.image && linkPreview.image.url && (
-                                            <img
-                                                src={linkPreview.image.url}
-                                                alt={linkPreview.title}
-                                                className="w-full h-auto mb-4"
-                                            />
-                                        )}
-                                        <a
-                                            href={linkPreview.url}
-                                            className="text-blue-500 hover:underline"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {linkPreview.url}
-                                        </a>
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={async () => {
+                                            if (customLink) {
+                                                setSelectedUrl(customLink);
+                                            }
+                                        }}
+                                        className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        Preview Link
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (customLink) {
+                                                handleAcceptCustomLink(customLink);
+                                                setCustomLink('');
+                                            }
+                                        }}
+                                        className="bg-green-500 text-white p-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    >
+                                        Accept Link
+                                    </button>
+                                </div>
+                                {customLinks.length > 0 && (
+                                    <div className="custom-links-list mt-4">
+                                        <h3 className="text-lg font-semibold mb-2">Accepted Custom Links</h3>
+                                        <ul className="list-disc list-inside">
+                                            {customLinks.map((link, index) => (
+                                                <li key={index} className="mb-2 flex items-center">
+                                                    <span className={`w-3 h-3 rounded-full bg-green-500 mr-2`}></span>
+                                                    <a
+                                                        href="#"
+                                                        onClick={() => {
+                                                            setSelectedUrl(link);
+                                                        }}
+                                                        className="text-blue-500 hover:underline"
+                                                    >
+                                                        {link}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                ) : (
-                                    <div>Failed to load preview</div>
                                 )}
                             </div>
                         )}
-                        <div>
-                            <Link href={selectedUrl}>Go to the site</Link>
-                        </div>
-
                     </div>
-                </div >
+                    <div className="sidebar transition-all duration-300 ease-in-out overflow-y-auto bg-white shadow-md fixed inset-y-0 left-0 w-1/3 z-50 p-4" ref={iframeRef} style={showSidebar ? { transform: 'translateX(0%)' } : { transform: 'translateX(-100%)' }}>
+                        <button
+                            onClick={() => setShowSidebar(false)}
+                            className="text-black font-semibold mb-2"
+                        >
+                            x
+                        </button>
+                        {fetchingPreview ? (
+                            <p className="text-gray-600 mb-6">Loading preview...</p>
+                        ) : linkPreview ? (
+                            <div>
+                                <h3 className="text-lg text-black font-semibold">{linkPreview.title}</h3>
+                                <p className="text-gray-600">{linkPreview.description}</p>
+                                {linkPreview.image && linkPreview.image.url && (
+                                    <img
+                                        src={linkPreview.image.url}
+                                        alt={linkPreview.title}
+                                        className="w-full h-auto mb-4 text-black"
+                                    />
+                                )}
+                                <a
+                                    href={linkPreview.url}
+                                    className="text-blue-500 hover:underline"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {linkPreview.url}
+                                </a>
+                                <div className='text-brefd-primary-purple'>
+                                    <Link href={selectedUrl} target="_blank" rel="noopener noreferrer">Go to the site</Link>
+                                </div>
+                            </div>
+                        ) : (
+                            <div>Failed to load preview</div>
+                        )}
+                    </div>
+                </div>
             }
         </>
     );

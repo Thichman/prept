@@ -64,19 +64,19 @@ export default function Login({
         className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
         action={signIn}
       >
-        <label className="text-md text-white" htmlFor="email">
+        <label className="text-md text-black" htmlFor="email">
           Email
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 text-white"
+          className="rounded-md border-blue-500 px-4 py-2 bg-inherit border mb-6 text-black"
           name="email"
           placeholder="you@example.com"
         />
-        <label className="text-md text-white" htmlFor="password">
+        <label className="text-md text-black" htmlFor="password">
           Password
         </label>
         <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6 text-white"
+          className="rounded-md px-4 py-2 bg-inherit border mb-6 text-black border-blue-500"
           type="password"
           name="password"
           placeholder="••••••••"
