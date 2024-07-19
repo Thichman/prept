@@ -17,6 +17,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     const [activeTab, setActiveTab] = useState('nameOnly');
     const [showResults, setShowResults] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
+    const [customLinks, setCustomLinks] = useState([]);
     const iframeRef = useRef(null);
 
     const handleSearch = async () => {
@@ -95,10 +96,14 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         };
     }, []);
 
+    const handleAcceptCustomLink = (link) => {
+        const customResult = { link, title: link }; // Custom object for the custom link
+        acceptResult(customResult);
+    };
+
     return (
         <>
             <div className="information-finder rounded-lg shadow-xl">
-                {/* Search Form */}
                 {!showResults && (
                     <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
                         <h2 className="text-xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
@@ -140,23 +145,12 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                             >
                                 Search
                             </button>
-                            {submittedLinks.size > 0 && (
-                                <button
-                                    onClick={submitForm}
-                                    disabled={timeout}
-                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
-                                >
-                                    Submit Results
-                                </button>
-                            )}
                         </div>
                     </div>
                 )}
             </div>
-            {/* Main Content */}
             {showResults &&
                 <div className="flex pt-4 w-full">
-                    {/* Search Results */}
                     <div className="results bg-white p-6 rounded-lg shadow-md mb-6 flex-1">
                         <h2 className="text-xl text-black font-semibold mb-4">Custom Search Results</h2>
                         <div className="tabs mb-4">
@@ -178,6 +172,15 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                             >
                                 All Criteria
                             </button>
+                            {submittedLinks.size > 0 && (
+                                <button
+                                    onClick={submitForm}
+                                    disabled={timeout}
+                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                >
+                                    Submit Results
+                                </button>
+                            )}
                         </div>
                         {getActiveTabResults().length > 0 &&
                             getActiveTabResults().map((result, index) => (
@@ -187,8 +190,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                 >
                                     <div className="flex items-center">
                                         <span
-                                            className={`w-3 h-3 pr-3 rounded-full ${submittedLinks.has(result.link) ? 'bg-green-500' : 'bg-red-500'
-                                                } mr-2`}
+                                            className={`w-3 h-3 rounded-full ${submittedLinks.has(result.link) ? 'bg-green-500' : 'bg-red-500'}`}
                                         ></span>
                                         <a
                                             href="#"
@@ -230,21 +232,54 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                     placeholder="Enter your link here"
                                     className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
-                                <button
-                                    onClick={async () => {
-                                        if (customLink) {
-                                            setSelectedUrl(customLink);
-                                        }
-                                    }}
-                                    className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    Preview Link
-                                </button>
+                                <div className="flex space-x-2">
+                                    <button
+                                        onClick={async () => {
+                                            if (customLink) {
+                                                setSelectedUrl(customLink);
+                                            }
+                                        }}
+                                        className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        Preview Link
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            if (customLink) {
+                                                handleAcceptCustomLink(customLink);
+                                                setCustomLink('');
+                                            }
+                                        }}
+                                        className="bg-green-500 text-white p-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    >
+                                        Accept Link
+                                    </button>
+                                </div>
+                                {customLinks.length > 0 && (
+                                    <div className="custom-links-list mt-4">
+                                        <h3 className="text-lg font-semibold mb-2">Accepted Custom Links</h3>
+                                        <ul className="list-disc list-inside">
+                                            {customLinks.map((link, index) => (
+                                                <li key={index} className="mb-2 flex items-center">
+                                                    <span className={`w-3 h-3 rounded-full bg-green-500 mr-2`}></span>
+                                                    <a
+                                                        href="#"
+                                                        onClick={() => {
+                                                            setSelectedUrl(link);
+                                                        }}
+                                                        className="text-blue-500 hover:underline"
+                                                    >
+                                                        {link}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
-
-                    <div className="sidebar transition-all duration-300 ease-in-out bg-white shadow-md fixed inset-y-0 left-0 w-1/3 z-50 p-4" ref={iframeRef} style={showSidebar ? { transform: 'translateX(0%)' } : { transform: 'translateX(-100%)' }}>
+                    <div className="sidebar transition-all duration-300 ease-in-out overflow-y-auto bg-white shadow-md fixed inset-y-0 left-0 w-1/3 z-50 p-4" ref={iframeRef} style={showSidebar ? { transform: 'translateX(0%)' } : { transform: 'translateX(-100%)' }}>
                         <button
                             onClick={() => setShowSidebar(false)}
                             className="text-black font-semibold mb-2"
@@ -280,7 +315,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                             <div>Failed to load preview</div>
                         )}
                     </div>
-                </div >
+                </div>
             }
         </>
     );

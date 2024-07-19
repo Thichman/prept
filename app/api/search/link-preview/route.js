@@ -9,9 +9,6 @@ export async function POST(req) {
     try {
         const { status, data: linkPreview } = await mql(url);
 
-        // Log the response for debugging
-        console.log('Link preview:', linkPreview);
-
         // Destructure the necessary fields from the linkPreview object
         const { title, description, image } = linkPreview;
 
