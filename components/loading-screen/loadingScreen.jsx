@@ -1,16 +1,17 @@
 'use client'
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import getUser from './getUser'
+import getUser from './getUser';
+import Video from 'next-video';
+import robot from '../../videos/robot.mp4';
 
 export default function LoadingScreen() {
     const router = useRouter();
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            // Replace with your user check logic
-            const userIsLoggedIn = async () => await getUser();
 
+        const timer = setTimeout(async () => {
+            const userIsLoggedIn = await getUser();
             if (userIsLoggedIn) {
                 router.push('/dashboard');
             } else {
@@ -23,10 +24,7 @@ export default function LoadingScreen() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black">
-            <video autoPlay muted loop width="320" height="240">
-                <source src="/videos/robot1.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <Video src={robot} autoPlay loop muted />;
         </div>
     );
 }
