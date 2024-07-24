@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { mainScraper } from "./data-scraping/main-scraper";
 import { jsPDF } from "jspdf";
 import ChatInterface from "./components/chat";
 import InformationFinder from "./components/information-finder/InformationFinder"
+import { staticPrompts } from './static-props/prompts'
 
 export default function dashboard() {
     const [summary, setSummary] = useState('');
@@ -11,6 +12,8 @@ export default function dashboard() {
     const [showAI, setShowAI] = useState(false);
     const [scrapedData, setScrapedData] = useState();
     const [timeout, setTimeout] = useState(false);
+    const [sendPrompt, setSendPrompt] = useState('');
+    const prompts = staticPrompts();
 
     const handleAcceptedResult = async (url) => {
         setTimeout(true);
@@ -23,8 +26,6 @@ export default function dashboard() {
         try {
             const scrapedResult = await mainScraper(dataToScrape);
             const parsedResult = JSON.parse(scrapedResult);
-
-            console.log(scrapedResult)
             setScrapedData(prevData => ({
                 ...prevData,
                 ...parsedResult,
@@ -55,6 +56,7 @@ export default function dashboard() {
 
         const returnPDF = await response.json();
         setSummary(returnPDF.kwargs.content);
+        console.log(returnPDF.kwargs.content)
         setLoading(false);
     };
 
@@ -105,6 +107,41 @@ export default function dashboard() {
         setTimeout(false)
     };
 
+    const handlePrompt = (prompt) => {
+        setSendPrompt(prompt);
+        setShowAI(true);
+    };
+
+    const parseSummary = (summary) => {
+        const sections = summary.split(/\d+\.\s+/).slice(1);
+        const parsedData = sections.map(section => {
+            const [titleLine, ...contentLines] = section.split('\n');
+            const title = titleLine.replace(/[:]/g, '').trim();
+            const content = contentLines.join('\n').trim();
+            return { title, content };
+        });
+        return parsedData;
+    };
+
+    const Section = ({ title, content, index }) => {
+        if (index === 0) {
+            return (
+                <div className="mb-6 flex">
+                </div>
+            )
+        } else {
+            return (
+                <div className="mb-6">
+                    <h2 className="text-xl font-bold text-blue-700 mb-2">{title}</h2>
+                    <p className="text-gray-700">{content}</p>
+                </div>
+            )
+        }
+    };
+
+    const parsedSummary = summary ? parseSummary(summary) : [];
+
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
             {!loading && !summary && (
@@ -135,21 +172,36 @@ export default function dashboard() {
                     </div>
                 ) : summary ? (
                     <div>
-                        <div className="mb-4 text-black bg-gray-300 p-4 rounded-md">
-                            {summary.split('\n').map((line, index) => (
-                                <p key={index}>{line}</p>
+                        <div className="max-w-[800px] mx-auto py-8 px-6 rounded-lg shadow-lg bg-white">
+                            {parsedSummary.map((section, index) => (
+                                <Section key={index} title={section.title} content={section.content} index={index} />
                             ))}
+                            <div className="flex items-center justify-center space-x-4 mt-4">
+                                <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
+                                <button onClick={handleShowAI} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Chat with AI</button>
+                                <button onClick={handleReset} className="bg-red-500 text-back py-2 px-4 rounded-md hover:bg-red-600 transition duration-300">Bréf Someone New</button>
+                            </div>
                         </div>
-                        <div className="flex items-center justify-center space-x-4">
-                            <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
-                            <button onClick={handleShowAI} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Chat with AI</button>
-                            <button onClick={handleReset} className="bg-red-500 text-back py-2 px-4 rounded-md hover:bg-red-600 transition duration-300">Bréf Someone New</button>
+                        <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
+                            <h1 className="text-2xl items-center justify-center font-bold text-brefd-primary-indigo mb-4">Chat with Our AI using custom prompts</h1>
+                            <p className="text-2xl text-center font-medium text-gray-500">Make sure to update the fields with your information</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {prompts.map((prompt, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => handlePrompt(prompt)}
+                                        className="bg-brefd-primary-indigo text-white py-2 px-4 rounded-md hover:bg-brefd-primary-dark transition duration-300 w-full"
+                                    >
+                                        {prompt}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ) : null}
             </div>
-            <div className={`fixed right-0 top-0 h-full bg-white shadow-lg transition-transform transform ${showAI ? 'translate-x-0' : 'translate-x-full'}`} style={{ width: '400px' }}>
-                {showAI && <ChatInterface context={JSON.stringify(scrapedData)} />}
+            <div className={`fixed right-0 top-0 h-full bg-white shadow-lg transition-transform transform ${showAI ? 'translate-x-0' : 'translate-x-full'}`} style={{ width: '600px' }}>
+                {showAI && <ChatInterface context={JSON.stringify(scrapedData)} prompt={sendPrompt} />}
             </div>
             {summary &&
                 <button

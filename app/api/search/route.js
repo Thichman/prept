@@ -8,6 +8,7 @@ export async function POST(req) {
     if (data.company) queryParts.push(data.company);
     if (data.location) queryParts.push(data.location);
     if (data.role) queryParts.push(data.role);
+    if (data.extras) queryParts.push(data.extras);
 
     const query = queryParts.join(' ');
 
