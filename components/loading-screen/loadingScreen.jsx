@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import getUser from './getUser';
 import Video from 'next-video';
-import robot from '../../videos/robot.mp4';
+import robot from '../../public/_next-video/robot.mp4';
 
 export default function LoadingScreen() {
     const router = useRouter();
