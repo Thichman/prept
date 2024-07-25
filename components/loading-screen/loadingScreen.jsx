@@ -2,8 +2,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import getUser from './getUser';
-import Video from 'next-video';
-import robot from '../../public/_next-video/robot.mp4';
 
 export default function LoadingScreen() {
     const router = useRouter();
@@ -24,7 +22,6 @@ export default function LoadingScreen() {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-black">
-            <Video src={robot} autoPlay loop muted />;
         </div>
     );
 }
