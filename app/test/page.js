@@ -57,7 +57,6 @@ export default function Test() {
         const parsedData = sections.map(section => {
             const [title, ...contentLines] = section.split('\n').filter(line => line.trim() !== '');
             const content = contentLines.join('\n').trim();
-            // Remove trailing '##' from the title
             const cleanedTitle = title.replace(/ ##$/, '').trim();
             return { title: cleanedTitle, content };
         });

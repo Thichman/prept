@@ -3,9 +3,6 @@ import mql from '@microlink/mql';
 export async function POST(req) {
     const data = await req.json();
     const { url } = data;
-
-    console.log('Requested URL:', url);
-
     try {
         const { status, data: linkPreview } = await mql(url);
 
