@@ -110,13 +110,13 @@ const ChatInterface = ({ context, prompt }) => {
                             handleSend();
                         }
                     }}
-                    className="flex-1 p-2 border rounded-l-lg text-black resize-none overflow-hidden"
+                    className="flex-1 p-2 border rounded-l-lg text-black resize-none overflow-hidden mr-16"
                     placeholder="Type your message..."
                     rows="1"
                     style={{ minHeight: '2.5rem' }}
                 />
                 {!awaitReturn && (
-                    <button onClick={handleSend} className="bg-blue-500 text-white p-2 rounded-r-lg h-12 w-12 rounded-lg relative bottom-0">
+                    <button onClick={handleSend} className="bg-blue-500 text-white p-2 rounded-r-lg h-12 w-16 rounded-lg absolute bottom-3 right-2">
                         Send
                     </button>
                 )}

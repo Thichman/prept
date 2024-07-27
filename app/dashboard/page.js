@@ -55,9 +55,10 @@ export default function dashboard() {
         })
 
         const returnPDF = await response.json();
-        setSummary(returnPDF.kwargs.content);
         console.log(returnPDF.kwargs.content)
+        setSummary(returnPDF.kwargs.content);
         setLoading(false);
+        console.log("summary set")
     };
 
     const handleDownloadPDF = () => {
@@ -112,35 +113,6 @@ export default function dashboard() {
         setShowAI(true);
     };
 
-    const parseSummary = (summary) => {
-        const sections = summary.split(/\d+\.\s+/).slice(1);
-        const parsedData = sections.map(section => {
-            const [titleLine, ...contentLines] = section.split('\n');
-            const title = titleLine.replace(/[:]/g, '').trim();
-            const content = contentLines.join('\n').trim();
-            return { title, content };
-        });
-        return parsedData;
-    };
-
-    const Section = ({ title, content, index }) => {
-        if (index === 0) {
-            return (
-                <div className="mb-6 flex">
-                </div>
-            )
-        } else {
-            return (
-                <div className="mb-6">
-                    <h2 className="text-xl font-bold text-blue-700 mb-2">{title}</h2>
-                    <p className="text-gray-700">{content}</p>
-                </div>
-            )
-        }
-    };
-
-    const parsedSummary = summary ? parseSummary(summary) : [];
-
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen">
@@ -173,9 +145,7 @@ export default function dashboard() {
                 ) : summary ? (
                     <div>
                         <div className="max-w-[800px] mx-auto py-8 px-6 rounded-lg shadow-lg bg-white">
-                            {parsedSummary.map((section, index) => (
-                                <Section key={index} title={section.title} content={section.content} index={index} />
-                            ))}
+                            <div className="text-black">{summary}</div>
                             <div className="flex items-center justify-center space-x-4 mt-4">
                                 <button onClick={handleDownloadPDF} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Download PDF</button>
                                 <button onClick={handleShowAI} className="bg-blue-500 text-back py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">Chat with AI</button>

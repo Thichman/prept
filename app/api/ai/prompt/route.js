@@ -17,78 +17,59 @@ export async function POST(request) {
   let prompt = ''
   if (requestData.parentData) {
     const parentDataStr = JSON.stringify(requestData.parentData);
-    prompt = `Create a comprehensive document that consolidates all relevant information about an individual, primarily focusing on LinkedIn data with additional insights from other sources such as company websites, news articles, and public records. This document should be used to prepare for meetings or calls. The document should be structured for easy readability and quick reference, and it should draw meaningful conclusions from the data to provide new and actionable insights.
-
-Document Requirements:
-
-1. Header:
-   - Include a professional header with the individual’s full name.
-   - If the name might be difficult to pronounce for English speakers, include a pronunciation guide.
-
-2. LINKEDIN DATA (40%):
-   - Personal Information:
-     - Full Name
-     - Current Job Title
-     - Current Company
-   - Company Information:
-     - Company Name
-     - Facts about the Business (e.g., industry, product lines, market position)
-     - Employee Count
-     - Headquarters Location
-     - Recent Major News (e.g., acquisitions, significant hires, promotions)
-     - Hiring Status (if available)
-   - Recent Activity:
-     - Summaries and direct quotes from recent LinkedIn posts
-     - Topics they frequently post about or engage with
-   - Job Role Information:
-     - Detailed description of the individual’s role
-     - Key responsibilities and typical activities
-     - Relevant industry lingo or terminology
-   - Potential Conversation Starters:
-     - Common interests or shared topics based on their activity
-     - Points of engagement from recent posts or shared articles
-
-3. ADDITIONAL INSIGHTS (20%):
-   - Social Media Data (if available):
-     - Verify the individual’s authenticity
-     - Note any recent posts or activity if relevant (Instagram, Twitter, etc.)
-   - Company Website and Public Records:
-     - Detailed company information and context
-     - Recent relevant news, financial data, and market position
-   - Articles and News Data:
-     - Interesting pieces of information about the individual from recent articles
-     - Notable awards, achievements, and other relevant context
-
-4. PROFESSIONAL ANALYSIS AND CONCLUSIONS (40%):
-   - Emotional and Psychological Insights:
-     - Analyze the individual's online presence to provide psychological insights
-     - Identify potential objections they might have and strategies to address them
-   - Strategic Recommendations:
-     - Provide suggestions on how to engage with the individual effectively
-     - Outline steps to close based on their interactions with the company
-   - Conclusions and Insights:
-     - Draw meaningful conclusions from the gathered data
-     - Highlight new insights that are not immediately obvious from the raw data
-     - Identify potential opportunities and challenges in engaging with the individual
-
-5. FORMAT AND PRESENTATION (Extremely Important!):
-   - Organized into clear, distinct sections for quick reference.
-   - Use paragraphs and bullet points where appropriate for clarity.
-   - Ensure no repeating information or unnecessary details.
-   - Ensure no special characters including '*', '#', '%', or multiple '-'s.
-   - Do not include any links to anything.
-   - Ensure no picture links are included.
-   - Include visual elements like company logos and profile pictures where available.
-   - Incorporate a modern, clean design that is easy on the eyes.
-   - Provide a summary box with key details for quick reference.
-   - Ensure a professional and tech-savvy look with appropriate use of whitespace and headings.
-   - FORMATTING IS VERY IMPORTANT DO NOT FORGET ANY OF THIS WHEN RETURNING YOUR RESPONSE.
-
-Goal: This document should provide all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. It should offer new insights and conclusions based on the data, not just regurgitate information. This should be a long document that encompasses everything important, do not cut corners.
-
-Here is the individual’s information:
-- Scraped Data: ${parentDataStr}
-`;
+    prompt = `Create a comprehensive document that consolidates all relevant information about an individual, primarily focusing on LinkedIn data with additional insights from other sources such as company websites, news articles, and public records. This document should be used to prepare for meetings or calls. The document should be structured for easy readability and quick reference, and it should draw meaningful conclusions from the data to provide new and actionable insights. Only include sections where relevant data is available. If any piece of information is not available or marked as N/A, exclude that section or header from the document.
+    Document Structure:
+    ## Profile Overview ##
+    Full Name:
+    Current Job Title:
+    Current Company:
+    LinkedIn:
+    Pronunciation Guide:
+    Professional Summary:
+    ## Company Overview ##
+    Company Name:
+    Industry:
+    Product Lines/Services:
+    Market Position:
+    Employee Count:
+    Headquarters Location:
+    Recent Major News:
+    Hiring Status:
+    ## Professional Activity ##
+    Recent Posts and Updates:
+    Topics of Interest:
+    Key Projects and Contributions:
+    ## Role and Responsibilities ##
+    Detailed Job Description:
+    Key Responsibilities and Activities:
+    Relevant Industry Terminology:
+    Skills and Expertise:
+    ## Engagement Insights ##
+    Common Interests:
+    Conversation Starters:
+    Potential Objections:
+    ## Additional Context ##
+    Social Media Activity:
+    Company Website Information:
+    News Articles and Public Records:
+    ## Professional Analysis and Recommendations ##
+    Psychological Insights:
+    Strategic Recommendations:
+    Conclusions and Opportunities:
+    ## Quick Reference Summary ##
+    Key Details:
+    Important Instructions:
+    Exclude any section or header if the corresponding information is not available or marked as N/A.
+    Use clear headings and subheadings to organize the information.
+    Use bullet points for listing important details.
+    Highlight key points using asterisks, dashes, or capitalization.
+    Maintain a consistent structure for each profile.
+    Ensure a professional and tech-savvy look with appropriate use of whitespace and headings.
+    Provide a summary box with key details for quick reference.
+    Goal:
+    This document should provide all the necessary information to effectively engage with the individual for any type of professional conversation or interaction. It should offer new insights and conclusions based on the data, not just regurgitate information. This should be a long document that encompasses everything important, do not cut corners.
+    Here is the individual’s information:
+    Scraped Data: ${parentDataStr}`;
 
 
   }
