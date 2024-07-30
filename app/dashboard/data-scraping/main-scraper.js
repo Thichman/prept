@@ -1,7 +1,5 @@
 export async function mainScraper(data) {
     let returnDataObject = {}; // Initialize an empty object to store the returned data
-
-    console.log(data)
     const fetchData = async (url, type) => {
         let endpoint;
         switch (type) {

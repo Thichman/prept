@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
-const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
+const InformationFinder = ({ onAcceptResult, submit, timeout, handleName }) => {
     const [name, setName] = useState('');
     const [company, setCompany] = useState('');
     const [location, setLocation] = useState('');
@@ -18,9 +18,11 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
     const [showResults, setShowResults] = useState(false);
     const [showSidebar, setShowSidebar] = useState(false);
     const [customLinks, setCustomLinks] = useState([]);
+    const [loading, setLoading] = useState(false);
     const iframeRef = useRef(null);
 
     const handleSearch = async () => {
+        setLoading(true);
         try {
             const nameResponse = await axios.post('/api/search/', { name });
             const nameAndCompanyResponse = await axios.post('/api/search/', { name, company });
@@ -33,11 +35,13 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
             setShowResults(true);
         } catch (error) {
             console.error('Error during search:', error);
+        } finally {
+            setLoading(false);
+            handleName(name)
         }
     };
 
     const acceptResult = (result) => {
-        console.log('Accepted result:', result);
         setSubmittedLinks((prev) => new Set(prev).add(result.link));
         onAcceptResult(result.link); // Send the accepted link to the parent component
     };
@@ -50,7 +54,6 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         setFetchingPreview(true);
         try {
             const response = await axios.post('/api/search/link-preview', { url });
-            console.log('Link preview data:', response.data);
             setLinkPreview(response.data);
             return response.data;
         } catch (error) {
@@ -101,52 +104,75 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         acceptResult(customResult);
     };
 
+    const isFormValid = () => {
+        return name.trim() !== '' && company.trim() !== '' && role.trim() !== '';
+    };
+
     return (
         <>
             <div className="information-finder rounded-lg shadow-xl">
-                {!showResults && (
-                    <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
-                        <h2 className="text-xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
-                        <div className="mb-4">
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder="Name"
-                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                            <input
-                                type="text"
-                                value={company}
-                                onChange={(e) => setCompany(e.target.value)}
-                                placeholder="Company"
-                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                            <input
-                                type="text"
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                                placeholder="Location (optional)"
-                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <input
-                                type="text"
-                                value={role}
-                                onChange={(e) => setRole(e.target.value)}
-                                placeholder="Role"
-                                className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required
-                            />
-                            <button
-                                onClick={handleSearch}
-                                className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                                Search
-                            </button>
+                {loading ? (
+                    <div className="flex items-center justify-center">
+                        <div aria-label="Loading..." role="status" className="flex items-center space-x-2">
+                            <svg className="h-20 w-20 animate-spin stroke-gray-500" viewBox="0 0 256 256">
+                                <line x1="128" y1="32" x2="128" y2="64" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="195.9" y1="60.1" x2="173.3" y2="82.7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="224" y1="128" x2="192" y2="128" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="195.9" y1="195.9" x2="173.3" y2="173.3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="128" y1="224" x2="128" y2="192" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="60.1" y1="195.9" x2="82.7" y2="173.3" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="32" y1="128" x2="64" y2="128" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                                <line x1="60.1" y1="60.1" x2="82.7" y2="82.7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="24"></line>
+                            </svg>
+                            <span className="text-4xl font-medium text-gray-500">Loading...</span>
                         </div>
                     </div>
+                ) : (
+                    !showResults && (
+                        <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
+                            <h2 className="text-2xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Name"
+                                    className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    value={company}
+                                    onChange={(e) => setCompany(e.target.value)}
+                                    placeholder="Company"
+                                    className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    value={location}
+                                    onChange={(e) => setLocation(e.target.value)}
+                                    placeholder="Location (optional)"
+                                    className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                                <input
+                                    type="text"
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    placeholder="Role"
+                                    className="border border-gray-300 p-3 mb-2 w-full rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required
+                                />
+                                <button
+                                    onClick={isFormValid() ? handleSearch : null}
+                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${!isFormValid() ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    disabled={!isFormValid()}
+                                >
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    )
                 )}
             </div>
             {showResults &&
@@ -156,19 +182,19 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                         <div className="tabs mb-4">
                             <button
                                 onClick={() => setActiveTab('nameOnly')}
-                                className={`p-2 mr-2 ${activeTab === 'nameOnly' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                className={`p-2 mr-2 rounded-md ${activeTab === 'nameOnly' ? 'bg-brefd-primary-indigo text-white hover:bg-brefd-primary-purple' : 'bg-gray-300 text-black hover:bg-gray-200'}`}
                             >
                                 Name Only
                             </button>
                             <button
                                 onClick={() => setActiveTab('nameAndCompany')}
-                                className={`p-2 mr-2 ${activeTab === 'nameAndCompany' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                className={`p-2 mr-2 rounded-md ${activeTab === 'nameAndCompany' ? 'bg-brefd-primary-indigo text-white hover:bg-brefd-primary-purple' : 'bg-gray-300 text-black hover:bg-gray-200'}`}
                             >
                                 Name & Company
                             </button>
                             <button
                                 onClick={() => setActiveTab('allCriteria')}
-                                className={`p-2 ${activeTab === 'allCriteria' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+                                className={`p-2 rounded-md ${activeTab === 'allCriteria' ? 'bg-brefd-primary-indigo text-white hover:bg-brefd-primary-purple' : 'bg-gray-300 text-black hover:bg-gray-200'}`}
                             >
                                 All Criteria
                             </button>
@@ -176,7 +202,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                 <button
                                     onClick={submitForm}
                                     disabled={timeout}
-                                    className={`bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 ${timeout ? 'opacity-50' : ''}`}
+                                    className={`bg-brefd-primary-indigo text-white p-3 rounded-md hover:bg-brefd-primary-purple focus:outline-none focus:ring-2 focus:ring-blue-500 mt-6 ml-4 right-6 absolute top-14 ${timeout ? 'opacity-50' : ''}`}
                                 >
                                     Submit Results
                                 </button>
@@ -188,7 +214,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                     key={index}
                                     className="result-item mb-4 flex items-center justify-between p-4 border border-gray-200 rounded-lg shadow-sm"
                                 >
-                                    <div className="flex items-center">
+                                    <div className="flex items-center space-x-3">
                                         <span
                                             className={`w-3 h-3 rounded-full ${submittedLinks.has(result.link) ? 'bg-green-500' : 'bg-red-500'}`}
                                         ></span>
@@ -205,7 +231,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                     {!submittedLinks.has(result.link) && (
                                         <button
                                             onClick={() => acceptResult(result)}
-                                            className="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            className="bg-green-700 text-white p-2 rounded-md hover:bg-green-600 shadow-md focus:outline-none focus:ring-2 focus:ring-green-500 ml-4"
                                         >
                                             Accept
                                         </button>
@@ -223,7 +249,10 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                             </div>
                         )}
                         {showCustomLinkInput && (
-                            <div className="custom-link bg-white p-6 rounded-lg shadow-md mt-4">
+                            <div
+                                className={`custom-link bg-white p-6 shadow-md mt-4 border border-t-black transition-all duration-500 ease-in-out overflow-hidden ${showCustomLinkInput ? 'max-h-screen' : 'max-h-0'
+                                    }`}
+                            >
                                 <h2 className="text-xl font-semibold mb-4">Add Your Own Link</h2>
                                 <input
                                     type="text"
@@ -239,7 +268,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                                 setSelectedUrl(customLink);
                                             }
                                         }}
-                                        className="bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="bg-brefd-primary-purple text-white p-3 rounded-md hover:bg-brefd-primary-indigo focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         Preview Link
                                     </button>
@@ -248,9 +277,10 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                                             if (customLink) {
                                                 handleAcceptCustomLink(customLink);
                                                 setCustomLink('');
+                                                setCustomLinks([...customLinks, customLink]);
                                             }
                                         }}
-                                        className="bg-green-500 text-white p-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        className="bg-green-700 text-white p-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                                     >
                                         Accept Link
                                     </button>
