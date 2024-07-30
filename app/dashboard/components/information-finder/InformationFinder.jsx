@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 
-const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
+const InformationFinder = ({ onAcceptResult, submit, timeout, handleName }) => {
     const [name, setName] = useState('');
     const [company, setCompany] = useState('');
     const [location, setLocation] = useState('');
@@ -37,11 +37,11 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
             console.error('Error during search:', error);
         } finally {
             setLoading(false);
+            handleName(name)
         }
     };
 
     const acceptResult = (result) => {
-        console.log('Accepted result:', result);
         setSubmittedLinks((prev) => new Set(prev).add(result.link));
         onAcceptResult(result.link); // Send the accepted link to the parent component
     };
@@ -54,7 +54,6 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
         setFetchingPreview(true);
         try {
             const response = await axios.post('/api/search/link-preview', { url });
-            console.log('Link preview data:', response.data);
             setLinkPreview(response.data);
             return response.data;
         } catch (error) {
@@ -131,7 +130,7 @@ const InformationFinder = ({ onAcceptResult, submit, timeout }) => {
                 ) : (
                     !showResults && (
                         <div className="search-form bg-white p-6 rounded-lg shadow-md mb-6">
-                            <h2 className="text-xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
+                            <h2 className="text-2xl text-black font-semibold mb-4">Who are we Bréfing for today?</h2>
                             <div className="mb-4">
                                 <input
                                     type="text"

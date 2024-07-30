@@ -21,10 +21,10 @@ export async function POST(request) {
     Document Structure:
     ## Profile Overview ##
     Full Name:
+    Pronunciation Guide:
     Current Job Title:
     Current Company:
     LinkedIn:
-    Pronunciation Guide:
     Professional Summary:
     ## Company Overview ##
     Company Name:
