@@ -52,10 +52,6 @@ export async function POST(request) {
         const run = await client.actor("aYG0l9s7dbB7j3gbS").call(input);
 
         const { items } = await client.dataset(run.defaultDatasetId).listItems();
-        items.forEach((item) => {
-            console.dir(item);
-        });
-
         const returnItems = JSON.stringify(items)
         return new Response(returnItems);
     } catch (error) {
